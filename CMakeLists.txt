@@ -45,11 +45,49 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
+    applications/controllers/joint_motor_controller/joint_motor_controller.cpp
+
+    Matrix_and_Robotics_on_STM32/src/matrix.cpp
+    Matrix_and_Robotics_on_STM32/src/robotics.cpp
+
+    applications/can.cpp
+    applications/can_recv.cpp
+    applications/uart_task.cpp
+    applications/buzzer_task.cpp
+    applications/led_task.cpp
+    applications/plot_task.cpp
+    applications/send_task/send_task.cpp
+    applications/control_task.cpp
+    applications/controllers/joint_motor_controller/joint_motor_controller.cpp
+    
+    sp_middleware/io/fdcan/fdcan.cpp
+    sp_middleware/io/led/led.cpp
+    sp_middleware/io/buzzer/buzzer.cpp
+    sp_middleware/io/ws2812/ws2812.cpp
+    sp_middleware/io/plotter/plotter.cpp
+    sp_middleware/motor/rm_motor/rm_motor.cpp
+    sp_middleware/motor/dm_motor/dm_motor.cpp
+    sp_middleware/motor/lk_motor/lk_motor.cpp
+    
+    sp_middleware/tools/math_tools/math_tools.cpp
+    sp_middleware/tools/pid/pid.cpp
+    sp_middleware/tools/mecanum/mecanum.cpp
+    sp_middleware/tools/diff_gear/diff_gear.cpp
+    sp_middleware/tools/motor_composer/motor_composer.cpp
+    sp_middleware/tools/crc/crc.cpp
+    sp_middleware/tools/low_pass_filter/low_pass_filter.cpp
+    sp_middleware/referee/pm02/pm02.cpp 
+    sp_middleware/referee/ui/element.cpp 
+    sp_middleware/referee/ui/manager.cpp 
+    sp_middleware/tools/crc/crc.cpp 
+    sp_middleware/referee/vt03/vt03.cpp
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
+    applications
+    sp_middleware
 )
 
 # Add project symbols (macros)

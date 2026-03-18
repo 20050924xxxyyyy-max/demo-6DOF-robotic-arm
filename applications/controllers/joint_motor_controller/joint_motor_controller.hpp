@@ -3,13 +3,15 @@
 
 #include "controllers/control_mode.hpp"
 #include "motor/dm_motor/dm_motor.hpp"
+#include "motor/rm_motor/rm_motor.hpp"
 #include "tools/pid/pid.hpp"
 
+template <typename MotorType>
 class JointMotorController
 {
 public:
   JointMotorController(
-    float mid, float min, float max, bool reverse, sp::DM_Motor & motor, sp::PID & pid,
+    float mid, float min, float max, bool reverse, MotorType & motor, sp::PID & pid,
     sp::PID & motor_speed_pid, bool feedforward = false);
 
   float pos;         // 只读! 单位: rad
@@ -33,7 +35,7 @@ public:
   const float sign_;
   const float feedforward_;
 
-  sp::DM_Motor & motor_;
+  MotorType & motor_;
 
   sp::PID & pid_;
   sp::PID & motor_speed_pid_;
@@ -43,7 +45,8 @@ public:
   float set_ = 0;
   float v_set_ = 0;
   float t_set_ = 0;
-  private:
+
+private:
 };
 
 #endif  // JOINT_MOTOR_CONTROLLER_HPP

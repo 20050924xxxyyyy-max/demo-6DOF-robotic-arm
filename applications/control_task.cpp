@@ -1,7 +1,8 @@
-#include "feedback_task.hpp"
+#include "control_task.hpp"
 
-#include "can_task.hpp"
+#include "can.hpp"
 #include "cmsis_os.h"
+#include "controllers/controllers.hpp"
 #include "uart_task.hpp"
 
 FeedbackMode mode;
@@ -16,17 +17,20 @@ void mode_control()
 
 void handle_disable()
 {
-  motor_x.cmd(0);
-  motor_y.cmd(0);
-  motor_z.cmd(0);
-  motor_yaw.cmd(0);
-  motor_roll1.cmd(0);
-  motor_pitch.cmd(0);
-  motor_roll2.cmd(0);
+  motor_j0.cmd(0);
+  motor_j1.cmd(0);
+  motor_j2.cmd(0);
+  motor_j3.cmd(0);
+  motor_j4.cmd(0);
+  motor_j5.cmd(0);
 }
 
-extern "C" void feedback_task()
+extern "C" void control_task()
 {
+  fdcan1.start();
+  fdcan2.start();
+  fdcan3.start();
+
   while (true) {
     mode_control();
     if (mode == FeedbackMode::DISABLE) handle_disable();
