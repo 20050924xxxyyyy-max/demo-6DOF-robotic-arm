@@ -9,35 +9,37 @@
 
 FeedbackMode mode;
 
-float m[6] = {1.90645, 1.74289, 1.71288, 0.84843, 0.60935, 0.696};  // 质量
-
+float m[6] = {0.42072, 0.41367, 0.233403, 0.161971, 0.078939, 0.0001};  // 质量
+// clang-format off
 static float rc_data[18] = {
-  -0.04 * 1e-3, -0.56 * 1e-3,  3.34 * 1e-3,  -142.65 * 1e-3, 0.02 * 1e-3,   -23.17 * 1e-3,
-  -2.05 * 1e-3, -28.74 * 1e-3, 82.85 * 1e-3, -25.43 * 1e-3,  -95.41 * 1e-3, 8.35 * 1e-3,
-  -0.03 * 1e-3, -3.45 * 1e-3,  -6.37 * 1e-3, 0.042 * 1e-3,   -0.156 * 1e-3, -116.561 * 1e-3};
+  0 * 1e-3, -9.281 * 1e-3,  107.324 * 1e-3,  
+  -19.53 * 1e-3, -0.15 * 1e-3,  107.18 * 1e-3,
+  0 * 1e-3, -42.780 * 1e-3, 72.806 * 1e-3, 
+  -1.313 * 1e-3, -8.30 * 1e-3,  -4.23 * 1e-3,
+  0.281 * 1e-3,  -3.864 * 1e-3, 51.008 * 1e-3,
+  -0.00001 * 1e-3,   -0.00001 * 1e-3, -0.00001 * 1e-3};
 Matrixf<6, 3> rc_temp(rc_data);
 Matrixf<3, 6> rc = rc_temp.trans();
 
 Matrixf<3, 3> I[6]{
   matrixf::diag<3, 3>(
-    std::array<float, 3>{2938662.32f * 1e-9f, 2646275.06f * 1e-9f, 3741970.63 * 1e-9f}.data()),
+    std::array<float, 3>{853161.97f * 1e-9f, 767319.00f * 1e-9f, 283012.83 * 1e-9f}.data()),
   matrixf::diag<3, 3>(
-    std::array<float, 3>{2745013.36f * 1e-9f, 18666652.63f * 1e-9f, 17899511.89 * 1e-9f}.data()),
+    std::array<float, 3>{200577.99f * 1e-9f, 813684.68f * 1e-9f, 793261.99 * 1e-9f}.data()),
   matrixf::diag<3, 3>(
-    std::array<float, 3>{15673091.09f * 1e-9f, 13376862.94f * 1e-9f, 4044424.22f * 1e-9f}.data()),
+    std::array<float, 3>{895449.75f * 1e-9f, 272040.73f * 1e-9f, 678932.37f * 1e-9f}.data()),
   matrixf::diag<3, 3>(
-    std::array<float, 3>{3263263.13f * 1e-9f, 1232294.41f * 1e-9f, 2811101.16f * 1e-9f}.data()),
+    std::array<float, 3>{83776.83f * 1e-9f, 82648.23f * 1e-9f, 16432.15f * 1e-9f}.data()),
   matrixf::diag<3, 3>(
     std::array<float, 3>{216462.11f * 1e-9f, 128603.9f * 1e-9f, 229525.98f * 1e-9f}.data()),
-  matrixf::diag<3, 3>(
-    std::array<float, 3>{2364.322f * 1e-9f, 2133.539f * 1e-9f, 451.009f * 1e-9f}.data()),
+  matrixf::eye<3, 3>() * 1e-9f,
 };  // 惯性张量
 
 float q[6] = {0};
 float qv[6] = {0};
 float qa[6] = {0};
 float he[6] = {0};
-
+// clang-format on
 robotics::Link links[6] = {
   robotics::Link(
     theta[0], d[0], a[0], alpha[0], robotics::R, theta[0], MIN_J0, MAX_J0, m[0], rc.col(0), I[0]),
