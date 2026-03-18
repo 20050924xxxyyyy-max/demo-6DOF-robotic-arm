@@ -13,6 +13,11 @@ inline sp::DM_Motor motor_j3(0x03, 0x13, 3.141593, 30, 10);
 inline sp::DM_Motor motor_j4(0x04, 0x14, 3.141593, 30, 10);
 inline sp::RM_Motor motor_j5(2, sp::RM_Motors::M2006);
 
+constexpr float theta[6] = {0, 0, 0, sp::SP_PI, sp::SP_PI / 2, 0};
+constexpr float d[6] = {0, 0, -0.10375, 0.40147, 0, 0.211};
+constexpr float a[6] = {0, 0.290, 0, 0.03, 0, 0};
+constexpr float alpha[6] = {sp::SP_PI / 2, 0, -sp::SP_PI / 2, sp::SP_PI / 2, -sp::SP_PI / 2, 0};
+
 constexpr float MAX_J0 = sp::SP_PI;  //rad
 constexpr float MAX_J1 = sp::SP_PI;  //rad
 constexpr float MAX_J2 = sp::SP_PI;  //rad

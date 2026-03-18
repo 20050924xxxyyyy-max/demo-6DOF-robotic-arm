@@ -129,10 +129,10 @@
    * performances than the scalar versions.
    *
    * <hr>
-   * CMSIS-DSP in ARM::CMSIS Pack
+   * CMSIS-DSP in CMSIS Pack
    * -----------------------------
    *
-   * The following files relevant to CMSIS-DSP are present in the <b>ARM::CMSIS</b> Pack directories:
+   * The following files relevant to CMSIS-DSP are present in the <b>CMSIS</b> Pack directories:
    * |File/Folder                      |Content                                                                 |
    * |---------------------------------|------------------------------------------------------------------------|
    * |\b CMSIS\\Documentation\\DSP     | This documentation                                                     |
