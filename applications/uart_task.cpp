@@ -1,0 +1,29 @@
+#include "uart_task.hpp"
+
+#include "cmsis_os.h"
+
+// 接收中断回调
+extern "C" void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef * huart, uint16_t Size)
+{
+  if (huart == vt03.huart) {
+    vt03.update(Size);
+    vt03.request();
+  }
+}
+
+// 错误
+extern "C" void HAL_UART_ErrorCallback(UART_HandleTypeDef * huart)
+{
+  if (huart == vt03.huart) {
+    vt03.request();
+  }
+}
+
+// 任务入口
+extern "C" void uart_task()
+{
+  vt03.request();
+  while (true) {
+    osDelay(100);
+  }
+}
