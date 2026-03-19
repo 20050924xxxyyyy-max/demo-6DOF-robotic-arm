@@ -100,11 +100,12 @@ extern "C" void control_task()
   fdcan2.start();
   fdcan3.start();
 
+  arm_init_enable();
   while (true) {
     mode_control();
     if (mode == FeedbackMode::DISABLE) handle_disable();
     if (mode == FeedbackMode::TORQUE) {
-      // TODO feedback strategy
+      // TODO feedback 1    strategy
       j0_controller.cmd_t(j0_controller.feedforward_t_);
       j1_controller.cmd_t(j1_controller.feedforward_t_);
       j2_controller.cmd_t(j2_controller.feedforward_t_);
@@ -112,6 +113,18 @@ extern "C" void control_task()
       j4_controller.cmd_t(j4_controller.feedforward_t_);
       j5_controller.cmd_t(j5_controller.feedforward_t_);
     }
-    osDelay(100);
+    j0_controller.control();
+    j1_controller.control();
+    j2_controller.control();
+    j3_controller.control();
+    j4_controller.control();
+    j5_controller.control();
+    send_arm_j0();
+    send_arm_j1();
+    send_arm_j2();
+    send_arm_j3();
+    send_arm_j4();
+    send_arm_j5();
+    osDelay(1);
   }
 }

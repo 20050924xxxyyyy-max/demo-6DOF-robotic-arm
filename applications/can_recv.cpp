@@ -1,5 +1,6 @@
 #include "can.hpp"
 #include "controllers/controllers.hpp"
+#include "cmsis_os.h"
 
 extern "C" void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef * hfdcan, uint32_t RxFifo0ITs)
 {

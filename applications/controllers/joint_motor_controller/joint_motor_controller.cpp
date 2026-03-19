@@ -1,4 +1,5 @@
 #include "joint_motor_controller.hpp"
+
 #include "tools/math_tools/math_tools.hpp"
 
 template <typename MotorType>
@@ -17,10 +18,16 @@ JointMotorController<MotorType>::JointMotorController(
 }
 
 template <typename MotorType>
-void JointMotorController<MotorType>::disable() { mode_ = ControlMode::DISABLE; }
+void JointMotorController<MotorType>::disable()
+{
+  mode_ = ControlMode::DISABLE;
+}
 
 template <typename MotorType>
-void JointMotorController<MotorType>::add(float value) { cmd(sp::limit_angle(set_ + value)); }
+void JointMotorController<MotorType>::add(float value)
+{
+  cmd(sp::limit_angle(set_ + value));
+}
 
 template <typename MotorType>
 void JointMotorController<MotorType>::cmd(float value)
@@ -52,7 +59,7 @@ void JointMotorController<MotorType>::set_feedforward(float value)
 template <typename MotorType>
 void JointMotorController<MotorType>::control()
 {
-  this->pos = sign_ * sp::limit_angle(sp::limit_angle(motor_.angle) - mid_);
+  this->pos = sign_ * motor_.angle - mid_;
   this->vel = sign_ * motor_.speed;
   this->torque_fdb = sign_ * motor_.torque;
 
@@ -60,7 +67,7 @@ void JointMotorController<MotorType>::control()
     motor_.cmd(0);
     return;
   }
-  
+
   if (mode_ == ControlMode::TORQUE) {
     motor_.cmd(t_set_);
   }
@@ -72,8 +79,9 @@ void JointMotorController<MotorType>::control()
     else if (mode_ == ControlMode::VELOCITY) {
       motor_speed_pid_.calc(v_set_, this->vel);
     }
-    
-    torque_cmd = sign_ * (feedforward_ ? motor_speed_pid_.out + feedforward_t_ : motor_speed_pid_.out);
+
+    torque_cmd =
+      sign_ * (feedforward_ ? motor_speed_pid_.out + feedforward_t_ : motor_speed_pid_.out);
     motor_.cmd(torque_cmd);
   }
 }
