@@ -40,15 +40,15 @@ constexpr float MID_J4 = 0.26476f - 0.69f;  //rad
 constexpr float MID_J5 = 0;                 //rad
 
 inline JointMotorController j0_controller(
-  MID_J0, MIN_J0, MAX_J0, false, motor_j0, j0_pos_pid, j0_speed_pid);
+  MID_J0, MIN_J0, MAX_J0, false, motor_j0, j0_pos_pid, j0_speed_pid, true);
 inline JointMotorController j1_controller(
-  MID_J1, MIN_J1, MAX_J1, true, motor_j1, j1_pos_pid, j1_speed_pid);
+  MID_J1, MIN_J1, MAX_J1, true, motor_j1, j1_pos_pid, j1_speed_pid, true);
 inline JointMotorController j2_controller(
-  MID_J2, MIN_J2, MAX_J2, true, motor_j2, j2_pos_pid, j2_speed_pid);
+  MID_J2, MIN_J2, MAX_J2, true, motor_j2, j2_pos_pid, j2_speed_pid, true);
 inline JointMotorController j3_controller(
-  MID_J3, MIN_J3, MAX_J3, false, motor_j3, j3_pos_pid, j3_speed_pid);
+  MID_J3, MIN_J3, MAX_J3, false, motor_j3, j3_pos_pid, j3_speed_pid, true);
 inline JointMotorController j4_controller(
-  MID_J4, MIN_J4, MAX_J4, false, motor_j4, j4_pos_pid, j4_speed_pid);
+  MID_J4, MIN_J4, MAX_J4, false, motor_j4, j4_pos_pid, j4_speed_pid, true);
 inline JointMotorController j5_controller(
-  MID_J5, MIN_J5, MAX_J5, false, motor_j5, j5_pos_pid, j5_speed_pid);
+  MID_J5, MIN_J5, MAX_J5, false, motor_j5, j5_pos_pid, j5_speed_pid, true);
 #endif  // CONTROLLERS_HPP

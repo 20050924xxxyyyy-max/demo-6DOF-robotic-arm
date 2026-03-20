@@ -154,7 +154,7 @@ void MX_FREERTOS_Init(void) {
   buzzerTaskHandle = osThreadCreate(osThread(buzzerTask), NULL);
 
   /* definition and creation of controlTask */
-  osThreadDef(controlTask, control_task, osPriorityAboveNormal, 0, 1024);
+  osThreadDef(controlTask, control_task, osPriorityAboveNormal, 0, 2048);
   controlTaskHandle = osThreadCreate(osThread(controlTask), NULL);
 
   /* definition and creation of ledTask */

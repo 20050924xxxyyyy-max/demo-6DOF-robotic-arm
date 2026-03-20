@@ -22,8 +22,6 @@ endif()
 set(CMAKE_PROJECT_NAME sp_custom_controller_26)
 set(CMSIS "${CMAKE_SOURCE_DIR}/Drivers/CMSIS")
 
-# Include toolchain file
-include("cmake/gcc-arm-none-eabi.cmake")
 
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
@@ -55,6 +53,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 
     Matrix_and_Robotics_on_STM32/src/matrix.cpp
     Matrix_and_Robotics_on_STM32/src/robotics.cpp
+    Matrix_and_Robotics_on_STM32/src/utils.cpp
 
     applications/can.cpp
     applications/can_recv.cpp
@@ -113,6 +112,7 @@ list(REMOVE_ITEM CMAKE_C_IMPLICIT_LINK_LIBRARIES ob)
 # Add linked libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
-    arm_cortexM7lfsp_math
+    # arm_cortexM7lfsp_math
     # Add user defined libraries
+    arm_cortexM7lfsp_math.a
 )

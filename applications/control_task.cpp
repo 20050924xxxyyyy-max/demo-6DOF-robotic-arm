@@ -102,7 +102,9 @@ extern "C" void control_task()
 
   arm_init_enable();
   while (true) {
+    arm_error_detect();
     mode_control();
+    calc_grav_t();
     if (mode == FeedbackMode::DISABLE) handle_disable();
     if (mode == FeedbackMode::TORQUE) {
       // TODO feedback 1    strategy

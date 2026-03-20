@@ -15,6 +15,7 @@ extern "C" void led_task()
       ws2812.set(0, g, 0);
       osDelay(100);
     }
+    osDelay(1);
   }
 
   return;
