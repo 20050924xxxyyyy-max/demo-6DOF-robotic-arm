@@ -5,7 +5,11 @@
 enum class FeedbackMode
 {
   DISABLE,
-  TORQUE
+  TORQUE,
+  POSITION
 };
 
+void handle_disable();
+void handle_remote();
+void handle_keyboard();
 #endif  // FEEDBACK_TASK_HPP

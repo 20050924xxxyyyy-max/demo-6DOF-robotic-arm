@@ -13,9 +13,9 @@
 
 FeedbackMode mode;
 FeedbackMode last_mode;
-
+auto last_remote_sw_l = sp::DBusSwitchMode::DOWN;
 AutomationManager automation;
-
+void switch_mode();
 float m[6] = {0.42072, 0.41367, 0.233403, 0.161971, 0.078939, 0.0001};  // 质量
 // clang-format off
 static float rc_data[18] = {
@@ -67,29 +67,35 @@ robotics::Serial_Link<6> sp_arm(links);
 void mode_control()
 {
   last_mode = mode;
-  if (vt03.mode == sp::VT03Mode::C)
+  if (remote.sw_r == sp::DBusSwitchMode::DOWN)
     mode = FeedbackMode::DISABLE;
-  else if (vt03.mode == sp::VT03Mode::N)
+  else if (remote.sw_r == sp::DBusSwitchMode::MID)
     mode = FeedbackMode::TORQUE;
+  else if (remote.sw_r == sp::DBusSwitchMode::UP)
+    mode = FeedbackMode::POSITION;
+  if (mode != last_mode) {
+    switch_mode();
+  }
 }
 
 void switch_mode()
 {
-  if (last_mode != mode) {
-    if (mode == FeedbackMode::TORQUE) {
-      automation.load(&deploy_arm);
-    }
+  if (mode == FeedbackMode::TORQUE) {
+    arm_j0.cmd(arm_j0.pos);
+    arm_j1.cmd(arm_j1.pos);
+    arm_j2.cmd(arm_j2.pos);
+    arm_j3.cmd(arm_j3.pos);
+    arm_j4.cmd(arm_j4.pos);
+    arm_j5.cmd(arm_j5.pos);
   }
-}
-
-void handle_disable()
-{
-  motor_j0.cmd(0);
-  motor_j1.cmd(0);
-  motor_j2.cmd(0);
-  motor_j3.cmd(0);
-  motor_j4.cmd(0);
-  motor_j5.cmd(0);
+  else if (mode == FeedbackMode::POSITION) {
+    arm_j0.cmd(arm_j0.pos);
+    arm_j1.cmd(arm_j1.pos);
+    arm_j2.cmd(arm_j2.pos);
+    arm_j3.cmd(arm_j3.pos);
+    arm_j4.cmd(arm_j4.pos);
+    arm_j5.cmd(arm_j5.pos);
+  }
 }
 
 void calc_grav_t()
@@ -118,25 +124,24 @@ extern "C" void control_task()
   fdcan3.start();
 
   arm_init_enable();
+  remote.request();
   while (true) {
     arm_error_detect();
     mode_control();
+    if (mode != last_mode) {
+      switch_mode();
+    }
     calc_grav_t();
-    if (mode == FeedbackMode::DISABLE) handle_disable();
+    if (mode == FeedbackMode::DISABLE) {
+      handle_disable();
+    }
     if (mode == FeedbackMode::TORQUE) {
-      // TODO feedback 1    strategy
-      arm_j0.cmd_t(arm_j0.feedforward_t_);
-      arm_j1.cmd_t(arm_j1.feedforward_t_);
-      arm_j2.cmd_t(arm_j2.feedforward_t_);
-      arm_j3.disable();
-      arm_j4.disable();
-      arm_j5.disable();
-      // arm_j3.cmd_t(arm_j3.feedforward_t_);
-      // arm_j4.cmd_t(arm_j4.feedforward_t_);
-      // arm_j5.cmd_t(arm_j5.feedforward_t_);
+      handle_remote();
     }
     // handle_disable();
-
+    if (mode == FeedbackMode::POSITION) {
+      handle_keyboard();
+    }
     arm_j0.control();
     arm_j1.control();
     arm_j2.control();
@@ -151,4 +156,62 @@ extern "C" void control_task()
     send_arm_j5();
     osDelay(1);
   }
+}
+
+void handle_disable()
+{
+  arm_z_calibrated = false;
+  arm_deployed = false;
+  arm_j0.disable();
+  arm_j1.disable();
+  arm_j2.disable();
+  arm_j3.disable();
+  arm_j4.disable();
+  arm_j5.disable();
+}
+
+void handle_remote()
+{
+  if (!automation.idle()) return;
+
+  if (remote.sw_l == sp::DBusSwitchMode::DOWN) {
+    arm_j0.cmd_t(arm_j0.feedforward_t_);
+    arm_j1.cmd_t(arm_j1.feedforward_t_);
+    arm_j2.cmd_t(arm_j2.feedforward_t_);
+    arm_j3.cmd_t(arm_j3.feedforward_t_);
+    arm_j4.cmd_t(arm_j4.feedforward_t_);
+    arm_j5.disable();
+  }
+  else if (remote.sw_l == sp::DBusSwitchMode::MID) {
+    arm_j0.add(-remote.ch_lh * 0.01);
+    arm_j1.add(remote.ch_lv * 0.01);
+    arm_j2.add(remote.ch_rv * 0.03);
+    arm_j3.add(remote.ch_rh * 0.03);
+    // arm_j4.cmd(arm_j4.pos);
+    arm_j4.add(0.0f);
+    arm_j5.disable();
+  }
+  else if (remote.sw_l == sp::DBusSwitchMode::UP) {
+    // arm_j0.cmd(arm_j0.pos);
+    // arm_j1.cmd(arm_j1.pos);
+    // arm_j2.cmd(arm_j2.pos);
+    // arm_j3.cmd(arm_j3.pos);
+    arm_j0.add(0.0f);
+    arm_j1.add(0.0f);
+    arm_j2.add(0.0f);
+    arm_j3.add(0.0f);
+    arm_j4.add(remote.ch_lv * 0.03);
+    arm_j5.add(remote.ch_lh * 0.03);
+  }
+  last_remote_sw_l = remote.sw_l;
+}
+
+void handle_keyboard()
+{
+  arm_j0.disable();
+  arm_j1.disable();
+  arm_j2.disable();
+  arm_j3.disable();
+  arm_j4.disable();
+  arm_j5.disable();
 }

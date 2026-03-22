@@ -10,6 +10,10 @@ extern "C" void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef * huart, uint16_t 
     vt03.update(Size, stamp_ms);
     vt03.request();
   }
+  if (huart == &huart5) {
+    remote.update(Size, stamp_ms);
+    remote.request();
+  }
 }
 
 // 错误
@@ -17,6 +21,9 @@ extern "C" void HAL_UART_ErrorCallback(UART_HandleTypeDef * huart)
 {
   if (huart == vt03.huart) {
     vt03.request();
+  }
+  if (huart == &huart5) {
+    remote.request();
   }
 }
 
