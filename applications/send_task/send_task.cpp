@@ -2,13 +2,13 @@
 
 #include "can.hpp"
 #include "cmsis_os.h"
+#include "controllers/controllers.hpp"
 #include "main.h"
 #include "motor/rm_motor/rm_motor.hpp"
 #include "string.h"
 #include "tools/crc/crc.hpp"
 #include "tools/math_tools/math_tools.hpp"
 #include "usart.h"
-#include "controllers/controllers.hpp"
 
 Controller tx_data;
 
@@ -55,6 +55,7 @@ void Controller::head_set()
 void Controller::pack_data()
 {
   float buff_[7] = {this->j0, this->j1, this->j2, this->j3, this->j4, this->j5, this->gripper};
+  // float buff_[7] = {0, 1, 2, 0, 0, 0, 0};
   memcpy(this->frame_.data.data, buff_, 7 * sizeof(float));
   // memcpy(this->frame_.data.data + 7 * sizeof(float), &this->pump, sizeof(bool));
 }

@@ -111,10 +111,15 @@ extern "C" void control_task()
       j0_controller.cmd_t(j0_controller.feedforward_t_);
       j1_controller.cmd_t(j1_controller.feedforward_t_);
       j2_controller.cmd_t(j2_controller.feedforward_t_);
-      j3_controller.cmd_t(j3_controller.feedforward_t_);
-      j4_controller.cmd_t(j4_controller.feedforward_t_);
-      j5_controller.cmd_t(j5_controller.feedforward_t_);
+      j3_controller.disable();
+      j4_controller.disable();
+      j5_controller.disable();
+      // j3_controller.cmd_t(j3_controller.feedforward_t_);
+      // j4_controller.cmd_t(j4_controller.feedforward_t_);
+      // j5_controller.cmd_t(j5_controller.feedforward_t_);
     }
+    // handle_disable();
+
     j0_controller.control();
     j1_controller.control();
     j2_controller.control();
