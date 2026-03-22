@@ -63,6 +63,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     applications/plot_task.cpp
     applications/send_task/send_task.cpp
     applications/control_task.cpp
+    applications/arm_task.cpp
 
     applications/automations/automation/automation.cpp
     applications/automations/automation_manager/automation_manager.cpp
@@ -90,6 +91,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     sp_middleware/referee/ui/manager.cpp 
     sp_middleware/tools/crc/crc.cpp 
     sp_middleware/referee/vt03/vt03.cpp
+    sp_middleware/referee/vt02/vt02.cpp
     sp_middleware/io/dbus/dbus.cpp
 
 )

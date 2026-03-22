@@ -10,6 +10,7 @@
 #include "tools/math_tools/math_tools.hpp"
 #include "usart.h"
 
+extern bool arm_deployed;
 Controller tx_data;
 
 // 校准零点偏移
@@ -31,6 +32,7 @@ void Controller::offset_init()
 // 从电机读取当前姿态位置
 void Controller::update()
 {
+  this->control = arm_deployed;
   this->j0 = arm_j0.pos;
   this->j1 = arm_j1.pos;
   this->j2 = arm_j2.pos;
@@ -54,10 +56,11 @@ void Controller::head_set()
 // 将数据打包到协议帧中
 void Controller::pack_data()
 {
-  float buff_[7] = {this->j0, this->j1, this->j2, this->j3, this->j4, this->j5, this->gripper};
+  float buff_[8] = {this->control, this->j0, this->j1, this->j2,
+                    this->j3,      this->j4, this->j5, this->gripper};
   // float buff_[7] = {0, 1, 2, 0, 0, 0, 0};
-  memcpy(this->frame_.data.data, buff_, 7 * sizeof(float));
-  // memcpy(this->frame_.data.data + 7 * sizeof(float), &this->pump, sizeof(bool));
+  memcpy(this->frame_.data.data, buff_, 8 * sizeof(float));
+  // memcpy(this->frame_.data.data + 8 * sizeof(float), &this->pump, sizeof(bool));
 }
 
 // 计算并设置协议帧的CRC校验码

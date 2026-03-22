@@ -1,5 +1,5 @@
-#ifndef CONTROL_TASK_HPP
-#define CONTROL_TASK_HPP
+#ifndef ARM_TASK_HPP
+#define ARM_TASK_HPP
 
 // 两种工作模式
 enum class FeedbackMode
@@ -13,4 +13,4 @@ extern FeedbackMode last_mode;
 void handle_disable();
 void handle_remote();
 void handle_keyboard();
-#endif  // CONTROL_TASK_HPP
+#endif  // ARM_TASK_HPP

@@ -4,8 +4,8 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "referee/referee_protocol/referee_protocol.hpp"
 #include "can.hpp"
+#include "referee/referee_protocol/referee_protocol.hpp"
 
 constexpr size_t CUSTOM_DATA_LEN =
   30;  // 数据段长度固定为30, ref: RoboMaster 裁判系统串口协议附录 V1.7.0（20241225）
@@ -24,6 +24,7 @@ private:
     uint16_t tail;  //for crc16
   } frame_;
 
+  float control = 0;  // 控制开关
   float j0 = 0;       // rad
   float j1 = 0;       // rad
   float j2 = 0;       // rad
