@@ -21,6 +21,7 @@ template <typename MotorType>
 void JointMotorController<MotorType>::disable()
 {
   mode_ = ControlMode::DISABLE;
+  set_ = pos;
 }
 
 template <typename MotorType>
@@ -33,6 +34,7 @@ template <typename MotorType>
 void JointMotorController<MotorType>::cmd(float value)
 {
   mode_ = ControlMode::POSITION;
+  set_ = value;
   // set_ = sp::limit_min_max(value, min_, max_);
 }
 
@@ -48,6 +50,7 @@ void JointMotorController<MotorType>::cmd_t(float value)
 {
   mode_ = ControlMode::TORQUE;
   t_set_ = sign_ * value;
+  set_ = pos;
 }
 
 template <typename MotorType>

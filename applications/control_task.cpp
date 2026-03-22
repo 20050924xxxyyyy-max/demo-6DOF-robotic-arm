@@ -184,11 +184,18 @@ void handle_remote()
   }
   else if (remote.sw_l == sp::DBusSwitchMode::MID) {
     arm_j0.add(-remote.ch_lh * 0.01);
-    arm_j1.add(remote.ch_lv * 0.01);
-    arm_j2.add(remote.ch_rv * 0.03);
-    arm_j3.add(remote.ch_rh * 0.03);
+    // arm_j1.add(remote.ch_lv * 0.01);
+    // arm_j2.add(remote.ch_rv * 0.03);
+    // arm_j3.add(remote.ch_rh * 0.03);
+    arm_j1.cmd_t(arm_j1.feedforward_t_);
+    arm_j2.cmd_t(arm_j2.feedforward_t_);
+    // arm_j1.cmd(arm_j1.pos);
+    // arm_j2.cmd(arm_j2.pos);
+    // arm_j3.cmd(arm_j3.pos);
+    arm_j3.disable();
     // arm_j4.cmd(arm_j4.pos);
-    arm_j4.add(0.0f);
+    // arm_j4.add(0.0f);
+    arm_j4.disable();
     arm_j5.disable();
   }
   else if (remote.sw_l == sp::DBusSwitchMode::UP) {
