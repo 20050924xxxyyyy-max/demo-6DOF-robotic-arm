@@ -8,7 +8,8 @@ enum class FeedbackMode
   TORQUE,
   POSITION
 };
-
+extern FeedbackMode mode;
+extern FeedbackMode last_mode;
 void handle_disable();
 void handle_remote();
 void handle_keyboard();

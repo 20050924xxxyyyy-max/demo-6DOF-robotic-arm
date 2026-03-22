@@ -30,7 +30,7 @@ inline sp::PID gripper_speed_pid(T, 0.005, 0, 0, 0.25, 0.01);
 //可以整周转动的转劣弧
 inline sp::PID j0_pos_pid(T, 15, 20, 1, MAX_J0_V, 1, 1.0f, true);
 inline sp::PID j1_pos_pid(T, 10, 10, 0, MAX_J1_V, 1, 1.0f, true);
-inline sp::PID j2_pos_pid(T, 15, 10, 0, MAX_J2_V, 1, 1.0f, true);
+inline sp::PID j2_pos_pid(T, 15, 10, 0, MAX_J2_V, 1, 1.0f);
 inline sp::PID j3_pos_pid(T, 20, 0, 0, MAX_J3_V, MAX_J3_V, 1.0f, true);
 inline sp::PID j4_pos_pid(T, 20, 0, 0, MAX_J4_V, MAX_J4_V, 1.0f, true);
 inline sp::PID j5_pos_pid(T, 0, 0, 0, MAX_J5_V, MAX_J5_V);

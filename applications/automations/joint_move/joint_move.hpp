@@ -6,7 +6,7 @@
 #include "automations/automation/automation.hpp"
 
 constexpr float MAX_P_ERROR = 1e-2;      // m
-constexpr float MAX_ANGLE_ERROR = 2e-2;  // rad
+constexpr float MAX_ANGLE_ERROR = 6e-2;  // rad
 constexpr float MAX_V_STILL = 1e-2;      // rad/s
 constexpr float MAX_W_STILL = 1e-2;      // rad/s
 

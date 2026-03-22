@@ -14,6 +14,7 @@
 FeedbackMode mode;
 FeedbackMode last_mode;
 auto last_remote_sw_l = sp::DBusSwitchMode::DOWN;
+bool deployed = false;
 AutomationManager automation;
 void switch_mode();
 float m[6] = {0.42072, 0.41367, 0.233403, 0.161971, 0.078939, 0.0001};  // 质量
@@ -73,13 +74,11 @@ void mode_control()
     mode = FeedbackMode::TORQUE;
   else if (remote.sw_r == sp::DBusSwitchMode::UP)
     mode = FeedbackMode::POSITION;
-  if (mode != last_mode) {
-    switch_mode();
-  }
 }
 
 void switch_mode()
 {
+  automation.quit();
   if (mode == FeedbackMode::TORQUE) {
     arm_j0.cmd(arm_j0.pos);
     arm_j1.cmd(arm_j1.pos);
@@ -89,6 +88,7 @@ void switch_mode()
     arm_j5.cmd(arm_j5.pos);
   }
   else if (mode == FeedbackMode::POSITION) {
+    automation.load(&deploy_arm);
     arm_j0.cmd(arm_j0.pos);
     arm_j1.cmd(arm_j1.pos);
     arm_j2.cmd(arm_j2.pos);
@@ -142,6 +142,7 @@ extern "C" void control_task()
     if (mode == FeedbackMode::POSITION) {
       handle_keyboard();
     }
+    automation.run();
     arm_j0.control();
     arm_j1.control();
     arm_j2.control();
@@ -217,10 +218,17 @@ void handle_remote()
 
 void handle_keyboard()
 {
-  arm_j0.disable();
-  arm_j1.disable();
-  arm_j2.disable();
-  arm_j3.disable();
-  arm_j4.disable();
-  arm_j5.disable();
+  // arm_j0.disable();
+  // arm_j1.disable();
+  // arm_j2.disable();
+  // arm_j3.disable();
+  // arm_j4.disable();
+  // arm_j5.disable();
+  if (!automation.idle()) return;
+  arm_j0.add(0.0f);
+  arm_j1.add(0.0f);
+  arm_j2.add(0.0f);
+  arm_j3.add(0.0f);
+  arm_j4.add(0.0f);
+  arm_j5.add(0.0f);
 }
