@@ -1,5 +1,9 @@
 #include "control_task.hpp"
 
+#include "automations/automation_manager/automation_manager.hpp"
+#include "automations/automations.hpp"
+#include "automations/helpers/helpers.hpp"
+#include "automations/joint_move/joint_move.hpp"
 #include "can.hpp"
 #include "cmsis_os.h"
 #include "controllers/controllers.hpp"
@@ -8,6 +12,9 @@
 #include "uart_task.hpp"
 
 FeedbackMode mode;
+FeedbackMode last_mode;
+
+AutomationManager automation;
 
 float m[6] = {0.42072, 0.41367, 0.233403, 0.161971, 0.078939, 0.0001};  // 质量
 // clang-format off
@@ -59,10 +66,20 @@ robotics::Serial_Link<6> sp_arm(links);
 
 void mode_control()
 {
+  last_mode = mode;
   if (vt03.mode == sp::VT03Mode::C)
     mode = FeedbackMode::DISABLE;
   else if (vt03.mode == sp::VT03Mode::N)
     mode = FeedbackMode::TORQUE;
+}
+
+void switch_mode()
+{
+  if (last_mode != mode) {
+    if (mode == FeedbackMode::TORQUE) {
+      automation.load(&deploy_arm);
+    }
+  }
 }
 
 void handle_disable()
@@ -77,21 +94,21 @@ void handle_disable()
 
 void calc_grav_t()
 {
-  q[0] = j0_controller.pos;
-  q[1] = j1_controller.pos;
-  q[2] = j2_controller.pos;
-  q[3] = j3_controller.pos;
-  q[4] = j4_controller.pos;
-  q[5] = j5_controller.pos;
+  q[0] = arm_j0.pos;
+  q[1] = arm_j1.pos;
+  q[2] = arm_j2.pos;
+  q[3] = arm_j3.pos;
+  q[4] = arm_j4.pos;
+  q[5] = arm_j5.pos;
 
   Matrixf<6, 1> torq = sp_arm.rne(q, qv, qa, he);  // 解算
 
-  j0_controller.set_feedforward(torq[0][0]);
-  j1_controller.set_feedforward(torq[1][0]);
-  j2_controller.set_feedforward(torq[2][0]);
-  j3_controller.set_feedforward(torq[3][0]);
-  j4_controller.set_feedforward(torq[4][0]);
-  j5_controller.set_feedforward(torq[5][0]);
+  arm_j0.set_feedforward(torq[0][0]);
+  arm_j1.set_feedforward(torq[1][0]);
+  arm_j2.set_feedforward(torq[2][0]);
+  arm_j3.set_feedforward(torq[3][0]);
+  arm_j4.set_feedforward(torq[4][0]);
+  arm_j5.set_feedforward(torq[5][0]);
 }
 
 extern "C" void control_task()
@@ -108,24 +125,24 @@ extern "C" void control_task()
     if (mode == FeedbackMode::DISABLE) handle_disable();
     if (mode == FeedbackMode::TORQUE) {
       // TODO feedback 1    strategy
-      j0_controller.cmd_t(j0_controller.feedforward_t_);
-      j1_controller.cmd_t(j1_controller.feedforward_t_);
-      j2_controller.cmd_t(j2_controller.feedforward_t_);
-      j3_controller.disable();
-      j4_controller.disable();
-      j5_controller.disable();
-      // j3_controller.cmd_t(j3_controller.feedforward_t_);
-      // j4_controller.cmd_t(j4_controller.feedforward_t_);
-      // j5_controller.cmd_t(j5_controller.feedforward_t_);
+      arm_j0.cmd_t(arm_j0.feedforward_t_);
+      arm_j1.cmd_t(arm_j1.feedforward_t_);
+      arm_j2.cmd_t(arm_j2.feedforward_t_);
+      arm_j3.disable();
+      arm_j4.disable();
+      arm_j5.disable();
+      // arm_j3.cmd_t(arm_j3.feedforward_t_);
+      // arm_j4.cmd_t(arm_j4.feedforward_t_);
+      // arm_j5.cmd_t(arm_j5.feedforward_t_);
     }
     // handle_disable();
 
-    j0_controller.control();
-    j1_controller.control();
-    j2_controller.control();
-    j3_controller.control();
-    j4_controller.control();
-    j5_controller.control();
+    arm_j0.control();
+    arm_j1.control();
+    arm_j2.control();
+    arm_j3.control();
+    arm_j4.control();
+    arm_j5.control();
     send_arm_j0();
     send_arm_j1();
     send_arm_j2();

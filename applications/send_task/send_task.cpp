@@ -31,12 +31,12 @@ void Controller::offset_init()
 // 从电机读取当前姿态位置
 void Controller::update()
 {
-  this->j0 = j0_controller.pos;
-  this->j1 = j1_controller.pos;
-  this->j2 = j2_controller.pos;
-  this->j3 = j3_controller.pos;
-  this->j4 = j4_controller.pos;
-  this->j5 = j5_controller.pos;
+  this->j0 = arm_j0.pos;
+  this->j1 = arm_j1.pos;
+  this->j2 = arm_j2.pos;
+  this->j3 = arm_j3.pos;
+  this->j4 = arm_j4.pos;
+  this->j5 = arm_j5.pos;
   this->gripper = 0;  // TODO gripper
 }
 

@@ -63,7 +63,11 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     applications/plot_task.cpp
     applications/send_task/send_task.cpp
     applications/control_task.cpp
-    applications/controllers/joint_motor_controller/joint_motor_controller.cpp
+
+    applications/automations/automation/automation.cpp
+    applications/automations/automation_manager/automation_manager.cpp
+    applications/automations/helpers/helpers.cpp
+    applications/automations/joint_move/joint_move.cpp
     
     sp_middleware/io/fdcan/fdcan.cpp
     sp_middleware/io/led/led.cpp
