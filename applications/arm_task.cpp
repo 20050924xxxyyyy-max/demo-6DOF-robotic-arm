@@ -49,17 +49,17 @@ float he[6] = {0};
 // clang-format on
 robotics::Link links[6] = {
   robotics::Link(
-    theta[0], d[0], a[0], alpha[0], robotics::R, theta[0], MIN_J0, MAX_J0, m[0], rc.col(0), I[0]),
+    theta[0], d[0], a[0], alpha[0], robotics::R, theta[0], -10000, 10000, m[0], rc.col(0), I[0]),
   robotics::Link(
-    theta[1], d[1], a[1], alpha[1], robotics::R, theta[1], MIN_J1, MAX_J1, m[1], rc.col(1), I[1]),
+    theta[1], d[1], a[1], alpha[1], robotics::R, theta[1], -10000, 10000, m[1], rc.col(1), I[1]),
   robotics::Link(
-    theta[2], d[2], a[2], alpha[2], robotics::R, theta[2], MIN_J2, MAX_J2, m[2], rc.col(2), I[2]),
+    theta[2], d[2], a[2], alpha[2], robotics::R, theta[2], -10000, 10000, m[2], rc.col(2), I[2]),
   robotics::Link(
-    theta[3], d[3], a[3], alpha[3], robotics::R, theta[3], MIN_J3, MAX_J3, m[3], rc.col(3), I[3]),
+    theta[3], d[3], a[3], alpha[3], robotics::R, theta[3], -10000, 10000, m[3], rc.col(3), I[3]),
   robotics::Link(
-    theta[4], d[4], a[4], alpha[4], robotics::R, theta[4], MIN_J4, MAX_J4, m[4], rc.col(4), I[4]),
+    theta[4], d[4], a[4], alpha[4], robotics::R, theta[4], -10000, 10000, m[4], rc.col(4), I[4]),
   robotics::Link(
-    theta[5], d[5], a[5], alpha[5], robotics::R, theta[5], MIN_J5, MAX_J5, m[5], rc.col(5), I[5]),
+    theta[5], d[5], a[5], alpha[5], robotics::R, theta[5], -10000, 10000, m[5], rc.col(5), I[5]),
 };
 
 robotics::Serial_Link<6> sp_arm(links);
@@ -67,12 +67,12 @@ robotics::Serial_Link<6> sp_arm(links);
 void mode_control()
 {
   last_mode = mode;
-  // if (remote.sw_r == sp::DBusSwitchMode::DOWN)
-  //   mode = FeedbackMode::DISABLE;
-  // else if (remote.sw_r == sp::DBusSwitchMode::MID)
-  //   mode = FeedbackMode::DISABLE;
-  // else if (remote.sw_r == sp::DBusSwitchMode::UP)
-  mode = FeedbackMode::TORQUE;
+  if (remote.sw_r == sp::DBusSwitchMode::DOWN)
+    mode = FeedbackMode::DISABLE;
+  else if (remote.sw_r == sp::DBusSwitchMode::MID)
+    mode = FeedbackMode::DISABLE;
+  else if (remote.sw_r == sp::DBusSwitchMode::UP)
+    mode = FeedbackMode::TORQUE;
 }
 
 void switch_mode()
@@ -167,12 +167,12 @@ void handle_remote()
 {
   // if (!automation.idle()) return;
 
-    // arm_j0.add(0.0f);
-    // arm_j1.add(0.0f);
-    // arm_j2.add(0.0f);
-    // arm_j3.add(0.0f);
-    // arm_j4.add(0.0f);
-    // arm_j5.add(0.0f);
+  // arm_j0.add(0.0f);
+  // arm_j1.add(0.0f);
+  // arm_j2.add(0.0f);
+  // arm_j3.add(0.0f);
+  // arm_j4.add(0.0f);
+  // arm_j5.add(0.0f);
   arm_j0.cmd_t(arm_j0.feedforward_t_);
   arm_j1.cmd_t(arm_j1.feedforward_t_);
   arm_j2.cmd_t(arm_j2.feedforward_t_);

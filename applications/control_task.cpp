@@ -25,7 +25,7 @@ extern "C" void control_task()
     arm_j2.control();
     arm_j3.control();
     arm_j4.control();
-    arm_j4.pos = sp::limit_min_max(arm_j4.pos, sp::SP_PI, 2 * sp::SP_PI);
+    // arm_j4.pos = sp::limit_min_max(arm_j4.pos, sp::SP_PI, 2 * sp::SP_PI);
     arm_j5.control();
     send_arm_j0();
     send_arm_j1();
