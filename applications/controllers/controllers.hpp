@@ -35,8 +35,8 @@ constexpr float MIN_J5 = -0.00;       //rad
 constexpr float MID_J0 = -0.531 + sp::SP_PI * 2;  //rad
 constexpr float MID_J1 = -2.79673;                //rad
 constexpr float MID_J2 = -1.60069;                //rad
-constexpr float MID_J3 = -1.0994;                 //rad
-constexpr float MID_J4 = 0.26476f - 0.69f;        //rad
+constexpr float MID_J3 = 2.58455;                 //rad
+constexpr float MID_J4 = -0.3810;                 //rad
 constexpr float MID_J5 = 0;                       //rad
 
 inline JointMotorController arm_j0(
@@ -46,9 +46,9 @@ inline JointMotorController arm_j1(
 inline JointMotorController arm_j2(
   MID_J2, MIN_J2, MAX_J2, true, motor_j2, j2_pos_pid, j2_speed_pid, true);
 inline JointMotorController arm_j3(
-  MID_J3, MIN_J3, MAX_J3, false, motor_j3, j3_pos_pid, j3_speed_pid, true);
+  MID_J3, MIN_J3, MAX_J3, true, motor_j3, j3_pos_pid, j3_speed_pid, true);
 inline JointMotorController arm_j4(
-  MID_J4, MIN_J4, MAX_J4, false, motor_j4, j4_pos_pid, j4_speed_pid, true);
+  MID_J4, MIN_J4, MAX_J4, true, motor_j4, j4_pos_pid, j4_speed_pid, true);
 inline JointMotorController arm_j5(
   MID_J5, MIN_J5, MAX_J5, false, motor_j5, j5_pos_pid, j5_speed_pid, true);
 #endif  // CONTROLLERS_HPP
