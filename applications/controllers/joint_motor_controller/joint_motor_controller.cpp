@@ -63,6 +63,9 @@ template <typename MotorType>
 void JointMotorController<MotorType>::control()
 {
   this->pos = sign_ * motor_.angle - mid_;
+  if (this->pos > max_) this->pos -= 2 * sp::SP_PI;
+  if (this->pos < min_) this->pos += 2 * sp::SP_PI;
+
   this->vel = sign_ * motor_.speed;
   this->torque_fdb = sign_ * motor_.torque;
 

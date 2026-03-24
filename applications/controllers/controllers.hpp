@@ -18,19 +18,19 @@ constexpr float d[6] = {0, 0, -0.0415, 0.16086, 0, 0};
 constexpr float a[6] = {0, 0.116, 0, 0.012, 0, 0};
 constexpr float alpha[6] = {sp::SP_PI / 2, 0, -sp::SP_PI / 2, sp::SP_PI / 2, -sp::SP_PI / 2, 0};
 
-constexpr float MAX_J0 = 100;   //rad
-constexpr float MAX_J1 = 100;   //rad
-constexpr float MAX_J2 = 100;   //rad
-constexpr float MAX_J3 = 100;   //rad
-constexpr float MAX_J4 = 100;   //rad
-constexpr float MAX_J5 = 0.00;  //rad
+constexpr float MAX_J0 = 10000;   //rad
+constexpr float MAX_J1 = 3.2110;  //rad
+constexpr float MAX_J2 = 1.620;   //rad
+constexpr float MAX_J3 = 10000;   //rad
+constexpr float MAX_J4 = 2.515;   //rad
+constexpr float MAX_J5 = 0.00;    //rad
 
-constexpr float MIN_J0 = -100;   //rad
-constexpr float MIN_J1 = -100;   //rad
-constexpr float MIN_J2 = -100;   //rad
-constexpr float MIN_J3 = -100;   //rad
-constexpr float MIN_J4 = -100;   //rad
-constexpr float MIN_J5 = -0.00;  //rad
+constexpr float MIN_J0 = -10000;  //rad
+constexpr float MIN_J1 = -0.1732;  //rad
+constexpr float MIN_J2 = -2.605;  //rad
+constexpr float MIN_J3 = -10000;  //rad
+constexpr float MIN_J4 = 7.005;   //rad
+constexpr float MIN_J5 = -0.00;   //rad
 
 constexpr float MID_J0 = -0.531 + sp::SP_PI * 2;  //rad
 constexpr float MID_J1 = -2.79673;                //rad

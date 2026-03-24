@@ -3,19 +3,19 @@
 #include "motor/rm_motor/rm_motor.hpp"
 #include "tools/pid/pid.hpp"
 
-constexpr float MAX_J0_V = 20;                        // rad/s
-constexpr float MAX_J1_V = 2.5;                       // rad/s
-constexpr float MAX_J2_V = 5.0;                       // rad/s
-constexpr float MAX_J3_V = 3;                         // rad/s
-constexpr float MAX_J4_V = 3;                         // rad/s
-constexpr float MAX_J5_V = sp::M2006_P36_MAX_TORQUE;  // rad/s
+constexpr float MAX_J0_V = 20;   // rad/s
+constexpr float MAX_J1_V = 2.5;  // rad/s
+constexpr float MAX_J2_V = 5.0;  // rad/s
+constexpr float MAX_J3_V = 3;    // rad/s
+constexpr float MAX_J4_V = 3;    // rad/s
+constexpr float MAX_J5_V = 1;    // rad/s
 
-constexpr float MAX_J0_T = 10;                        // N·m
-constexpr float MAX_J1_T = 10;                        // N·m
-constexpr float MAX_J2_T = 10;                        // N·m
-constexpr float MAX_J3_T = 10;                        // N·m
-constexpr float MAX_J4_T = 10.0f;                     // N·m
-constexpr float MAX_J5_T = sp::M2006_P36_MAX_TORQUE;  // N·m
+constexpr float MAX_J0_T = 10;    // N·m
+constexpr float MAX_J1_T = 10;    // N·m
+constexpr float MAX_J2_T = 10;    // N·m
+constexpr float MAX_J3_T = 0;     // N·m
+constexpr float MAX_J4_T = 0.0f;  // N·m
+constexpr float MAX_J5_T = 0.0f;  // N·m
 
 constexpr float T = 0.001;  // PID控制周期, 单位: s
 
