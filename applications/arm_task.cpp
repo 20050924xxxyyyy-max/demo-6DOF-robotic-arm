@@ -79,9 +79,9 @@ void switch_mode()
 {
   automation.quit();
   if (mode == FeedbackMode::TORQUE) {
-    // if (!arm_deployed) {
-    //   automation.load(&deploy_arm);
-    // }
+    if (!arm_deployed) {
+      automation.load(&deploy_arm);
+    }
     arm_j0.cmd(arm_j0.pos);
     arm_j1.cmd(arm_j1.pos);
     arm_j2.cmd(arm_j2.pos);
@@ -159,7 +159,7 @@ void handle_disable()
 
 void handle_remote()
 {
-  // if (!automation.idle()) return;
+  if (!automation.idle()) return;
 
   //   arm_j0.add(0.0f);
   //   arm_j1.add(0.0f);

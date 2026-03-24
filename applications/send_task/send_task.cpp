@@ -32,7 +32,7 @@ void Controller::offset_init()
 // 从电机读取当前姿态位置
 void Controller::update()
 {
-  this->control = arm_deployed;
+  this->control = true;
   this->j0 = arm_j0.pos;
   this->j1 = arm_j1.pos;
   this->j2 = arm_j2.pos;
