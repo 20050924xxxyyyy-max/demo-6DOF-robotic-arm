@@ -22,7 +22,7 @@ inline bool gripper_calibrated = false;
 //收臂
 inline auto deploy_arm = Sequence(
   move_j2(1.206f),
-  move_j0(-sp::SP_PI),
+  // move_j0(-sp::SP_PI),
   move_j1(0.1530f),
   // move_j2(1.5248f),
   // move_j3(0.0f),

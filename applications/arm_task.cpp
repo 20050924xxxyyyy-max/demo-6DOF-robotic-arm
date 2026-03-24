@@ -96,9 +96,9 @@ void switch_mode()
     arm_j5.disable();
   }
   else if (mode == FeedbackMode::POSITION) {
-    // if (!arm_deployed) {
-    //   automation.load(&deploy_arm);
-    // }
+    if (!arm_deployed) {
+      automation.load(&deploy_arm);
+    }
     arm_j0.cmd(arm_j0.pos);
     arm_j1.cmd(arm_j1.pos);
     arm_j2.cmd(arm_j2.pos);
@@ -167,12 +167,12 @@ void handle_remote()
 {
   // if (!automation.idle()) return;
 
-  //   arm_j0.add(0.0f);
-  //   arm_j1.add(0.0f);
-  //   arm_j2.add(0.0f);
-  //   arm_j3.add(0.0f);
-  //   arm_j4.add(0.0f);
-  //   arm_j5.add(0.0f);
+    // arm_j0.add(0.0f);
+    // arm_j1.add(0.0f);
+    // arm_j2.add(0.0f);
+    // arm_j3.add(0.0f);
+    // arm_j4.add(0.0f);
+    // arm_j5.add(0.0f);
   arm_j0.cmd_t(arm_j0.feedforward_t_);
   arm_j1.cmd_t(arm_j1.feedforward_t_);
   arm_j2.cmd_t(arm_j2.feedforward_t_);
