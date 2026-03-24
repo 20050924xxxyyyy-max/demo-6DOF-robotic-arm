@@ -24,14 +24,14 @@ private:
     uint16_t tail;  //for crc16
   } frame_;
 
-  float control = 0;  // 控制开关
-  float j0 = 0;       // rad
-  float j1 = 0;       // rad
-  float j2 = 0;       // rad
-  float j3 = 0;       // rad
-  float j4 = 0;       // rad
-  float j5 = 0;       // rad
-  float gripper = 0;  // rad
+  // float control = 0;  // 控制开关
+  // float j0 = 0;       // rad
+  // float j1 = 0;       // rad
+  // float j2 = 0;       // rad
+  // float j3 = 0;       // rad
+  // float j4 = 0;       // rad
+  // float j5 = 0;       // rad
+  // float gripper = 0;  // rad
 
   bool has_initiated = false;
   float j0_offset = 0;
@@ -43,6 +43,14 @@ private:
   float gripper_offset = 0;
 
 public:
+  float control = 0;  // 控制开关
+  float j0 = 0;       // rad
+  float j1 = 0;       // rad
+  float j2 = 0;       // rad
+  float j3 = 0;       // rad
+  float j4 = 0;       // rad
+  float j5 = 0;       // rad
+  float gripper = 0;  // rad
   void offset_init();
   void update();
   void head_set();

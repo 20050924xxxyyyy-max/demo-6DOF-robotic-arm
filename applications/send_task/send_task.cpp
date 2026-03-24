@@ -29,6 +29,7 @@ void Controller::offset_init()
     has_initiated = true;  // 确定已经校准
 }
 
+float j4_limited = 0;
 // 从电机读取当前姿态位置
 void Controller::update()
 {
@@ -38,14 +39,6 @@ void Controller::update()
   this->j2 = arm_j2.pos;
   this->j3 = arm_j3.pos;
   this->j4 = arm_j4.pos;
-  arm_j4.pos = sp::limit_min_max(arm_j4.pos, 3.1f, 6.3f);
-  // if (sp::limit_angle(arm_j4.pos > 0)) {
-  //   this->j4 = 0.0f;
-  // }
-  // else {
-  //   this->j4 = sp::limit_angle(arm_j4.pos);
-  // }
-  this->j4 = sp::limit_min_max(sp::limit_angle(arm_j4.pos), -sp::SP_PI, 0.0f);
   this->j5 = arm_j5.pos;
   this->gripper = 0;  // TODO gripper
 }

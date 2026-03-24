@@ -102,8 +102,8 @@ void send_arm_j4()
 
 void send_arm_j5()
 {
-  motor_j5.write(fdcan2.tx_data);
-  fdcan2.send(motor_j5.tx_id);
+  motor_j5.write(fdcan1.tx_data);
+  fdcan1.send(motor_j5.tx_id);
 }
 
 // void send_gripper()
