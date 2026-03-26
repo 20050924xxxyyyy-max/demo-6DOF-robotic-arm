@@ -39,7 +39,7 @@ void Controller::update()
   this->j2 = arm_j2.pos;
   this->j3 = arm_j3.pos;
   this->j4 = arm_j4.pos;
-  this->j5 = arm_j5.pos;
+  this->j5 = arm_j5.vel;
   this->gripper = 0;  // TODO gripper
 }
 

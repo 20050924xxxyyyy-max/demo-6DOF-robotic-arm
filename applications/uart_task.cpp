@@ -12,7 +12,7 @@ extern "C" void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef * huart, uint16_t 
   }
 
   if (huart == &huart1) {
-    vt02.update();
+    vt02.update(stamp_ms);
     vt02.request();
   }
 }

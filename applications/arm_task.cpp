@@ -67,11 +67,11 @@ robotics::Serial_Link<6> sp_arm(links);
 void mode_control()
 {
   last_mode = mode;
-  if (remote.sw_r == sp::DBusSwitchMode::DOWN)
-    mode = FeedbackMode::DISABLE;
-  else if (remote.sw_r == sp::DBusSwitchMode::MID)
-    mode = FeedbackMode::DISABLE;
-  else if (remote.sw_r == sp::DBusSwitchMode::UP)
+  // if (remote.sw_r == sp::DBusSwitchMode::DOWN)
+  //   mode = FeedbackMode::DISABLE;
+  // else if (remote.sw_r == sp::DBusSwitchMode::MID)
+  //   mode = FeedbackMode::DISABLE;
+  // else if (remote.sw_r == sp::DBusSwitchMode::UP)
     mode = FeedbackMode::TORQUE;
 }
 
