@@ -7,12 +7,13 @@
 #include "motor/rm_motor/rm_motor.hpp"
 #include "string.h"
 #include "tools/crc/crc.hpp"
+#include "tools/low_pass_filter/low_pass_filter.hpp"
 #include "tools/math_tools/math_tools.hpp"
 #include "usart.h"
 
 extern bool arm_deployed;
 Controller tx_data;
-
+sp::LowPassFilter j5_vel_filter(0.5f);  
 // 校准零点偏移
 void Controller::offset_init()
 {
@@ -39,7 +40,8 @@ void Controller::update()
   this->j2 = arm_j2.pos;
   this->j3 = arm_j3.pos;
   this->j4 = arm_j4.pos;
-  this->j5 = arm_j5.vel;
+  j5_vel_filter.update(arm_j5.vel);
+  this->j5 = j5_vel_filter.out;
   this->gripper = 0;  // TODO gripper
 }
 

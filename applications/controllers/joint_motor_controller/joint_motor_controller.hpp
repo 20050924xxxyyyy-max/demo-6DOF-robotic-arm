@@ -4,6 +4,7 @@
 #include "controllers/control_mode.hpp"
 #include "motor/dm_motor/dm_motor.hpp"
 #include "motor/rm_motor/rm_motor.hpp"
+#include "tools/low_pass_filter/low_pass_filter.hpp"
 #include "tools/pid/pid.hpp"
 
 template <typename MotorType>
