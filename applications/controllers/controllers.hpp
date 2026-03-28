@@ -33,12 +33,12 @@ constexpr float MIN_J3 = -10000;   //rad
 constexpr float MIN_J4 = -4;       //rad
 constexpr float MIN_J5 = -0.00;    //rad
 
-constexpr float MID_J0 = -0.531 + sp::SP_PI * 2;  //rad
-constexpr float MID_J1 = -2.79673;                //rad
-constexpr float MID_J2 = -1.60069;                //rad
-constexpr float MID_J3 = -2.58455;                //rad
-constexpr float MID_J4 = -2.667;                  //rad
-constexpr float MID_J5 = 0;                       //rad
+constexpr float MID_J0 = -0.531;    //rad
+constexpr float MID_J1 = -2.79673;  //rad
+constexpr float MID_J2 = -1.60069;  //rad
+constexpr float MID_J3 = -2.58455;  //rad
+constexpr float MID_J4 = -2.667;    //rad
+constexpr float MID_J5 = 0;         //rad
 
 inline JointMotorController arm_j0(
   MID_J0, MIN_J0, MAX_J0, false, motor_j0, j0_pos_pid, j0_speed_pid, true);

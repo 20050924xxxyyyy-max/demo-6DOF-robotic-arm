@@ -13,7 +13,8 @@
 
 extern bool arm_deployed;
 Controller tx_data;
-sp::LowPassFilter j5_vel_filter(0.5f);  
+sp::LowPassFilter j5_vel_filter(0.5f);
+
 // 校准零点偏移
 void Controller::offset_init()
 {
@@ -35,7 +36,7 @@ float j4_limited = 0;
 void Controller::update()
 {
   this->control = true;
-  this->j0 = sp::limit_min_max(sp::limit_angle(arm_j0.pos), -2.8f, 2.8f);
+  this->j0 = arm_j0.pos;
   this->j1 = arm_j1.pos;
   this->j2 = arm_j2.pos;
   this->j3 = arm_j3.pos;

@@ -72,7 +72,7 @@ void mode_control()
   // else if (remote.sw_r == sp::DBusSwitchMode::MID)
   //   mode = FeedbackMode::DISABLE;
   // else if (remote.sw_r == sp::DBusSwitchMode::UP)
-    mode = FeedbackMode::TORQUE;
+  mode = FeedbackMode::TORQUE;
 }
 
 void switch_mode()
