@@ -86,6 +86,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     sp_middleware/tools/motor_composer/motor_composer.cpp
     sp_middleware/tools/crc/crc.cpp
     sp_middleware/tools/low_pass_filter/low_pass_filter.cpp
+    sp_middleware/tools/joint/joint_controller.cpp
     sp_middleware/referee/pm02/pm02.cpp 
     sp_middleware/referee/ui/element.cpp 
     sp_middleware/referee/ui/manager.cpp 
@@ -93,7 +94,6 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     sp_middleware/referee/vt03/vt03.cpp
     sp_middleware/referee/vt02/vt02.cpp
     sp_middleware/io/dbus/dbus.cpp
-
 )
 
 # Add include paths

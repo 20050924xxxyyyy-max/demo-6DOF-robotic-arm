@@ -1,9 +1,10 @@
 #ifndef CONTROLLERS_HPP
 #define CONTROLLERS_HPP
 #include "../pids.hpp"
-#include "controllers/joint_motor_controller/joint_motor_controller.hpp"
+// #include "controllers/joint_motor_controller/joint_motor_controller.hpp"
 #include "motor/dm_motor/dm_motor.hpp"
 #include "motor/rm_motor/rm_motor.hpp"
+#include "tools/joint/joint_controller.hpp"
 #include "tools/math_tools/math_tools.hpp"
 
 inline sp::RM_Motor motor_j0(3, sp::RM_Motors::GM6020_V);
@@ -40,16 +41,18 @@ constexpr float MID_J3 = -2.58455;  //rad
 constexpr float MID_J4 = -2.667;    //rad
 constexpr float MID_J5 = 0;         //rad
 
-inline JointMotorController arm_j0(
-  MID_J0, MIN_J0, MAX_J0, false, motor_j0, j0_pos_pid, j0_speed_pid, true);
-inline JointMotorController arm_j1(
-  MID_J1, MIN_J1, MAX_J1, true, motor_j1, j1_pos_pid, j1_speed_pid, true);
-inline JointMotorController arm_j2(
-  MID_J2, MIN_J2, MAX_J2, true, motor_j2, j2_pos_pid, j2_speed_pid, true);
-inline JointMotorController arm_j3(
-  MID_J3, MIN_J3, MAX_J3, false, motor_j3, j3_pos_pid, j3_speed_pid, true);
-inline JointMotorController arm_j4(
-  MID_J4, MIN_J4, MAX_J4, false, motor_j4, j4_pos_pid, j4_speed_pid, true);
-inline JointMotorController arm_j5(
-  MID_J5, MIN_J5, MAX_J5, false, motor_j5, j5_pos_pid, j5_speed_pid, true);
+inline JointMotorController<sp::RM_Motor> arm_j0(
+  MID_J0, -10000, 10000, MIN_J0, MAX_J0, 100, false, motor_j0, j0_pos_pid, j0_speed_pid, true);
+inline JointMotorController<sp::DM_Motor> arm_j1(
+  MID_J1, -10000, 10000, MIN_J1, MAX_J1, 100, true, motor_j1, j1_pos_pid, j1_speed_pid, true);
+inline JointMotorController<sp::DM_Motor> arm_j2(
+  MID_J2, -10000, 10000, MIN_J2, MAX_J2, 100, true, motor_j2, j2_pos_pid, j2_speed_pid, true);
+inline JointMotorController<sp::DM_Motor> arm_j3(
+  MID_J3, -10000, 10000, MIN_J3, MAX_J3, 100, false, motor_j3, j3_pos_pid, j3_speed_pid, true);
+inline JointMotorController<sp::DM_Motor> arm_j4(
+  MID_J4, -10000, 10000, MIN_J4, MAX_J4, 100, false, motor_j4, j4_pos_pid, j4_speed_pid, true);
+inline JointMotorController<sp::RM_Motor> arm_j5(
+  MID_J5, -10000, 10000, MIN_J5, MAX_J5, 100, false, motor_j5, j5_pos_pid, j5_speed_pid, true);
+
+// inline JointController arm_joints(6, 0.01f, 20, 0.001, MAX_J0_T, 0.5);
 #endif  // CONTROLLERS_HPP
