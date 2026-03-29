@@ -49,7 +49,6 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
-    applications/controllers/joint_motor_controller/joint_motor_controller.cpp
 
     Matrix_and_Robotics_on_STM32/src/matrix.cpp
     Matrix_and_Robotics_on_STM32/src/robotics.cpp
