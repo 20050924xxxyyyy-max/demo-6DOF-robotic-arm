@@ -16,14 +16,14 @@ auto last_remote_sw_l = sp::DBusSwitchMode::DOWN;
 extern bool arm_deployed;
 AutomationManager automation;
 void switch_mode();
-float m[6] = {0.42072, 0.41367, 0.233403, 0.161971, 0.078939, 0.0001};  // 质量
+float m[6] = {0.16258, 1.0636, 0.06744, 0.14668, 0.22763, 0.0001};  // 质量
 // clang-format off
 static float rc_data[18] = {
-  0 * 1e-3, -9.281 * 1e-3,  107.324 * 1e-3,  
-  -19.53 * 1e-3, -0.15 * 1e-3,  107.18 * 1e-3,
-  0 * 1e-3, -42.780 * 1e-3, 72.806 * 1e-3, 
-  -1.313 * 1e-3, -8.30 * 1e-3,  -4.23 * 1e-3,
-  0.281 * 1e-3,  -3.864 * 1e-3, 51.008 * 1e-3,
+  0 * 1e-3, -28.8 * 1e-3,  23.85 * 1e-3,  
+  -59.03 * 1e-3, 0 * 1e-3,  90.03 * 1e-3,
+  0.16 * 1e-3, -63.02 * 1e-3, 56.08 * 1e-3, 
+  -10.85 * 1e-3, -49.21 * 1e-3,  -1.03 * 1e-3,
+  9.49 * 1e-3,  -0.35 * 1e-3, 41.63 * 1e-3,
   -0.00001 * 1e-3,   -0.00001 * 1e-3, -0.00001 * 1e-3};
 Matrixf<6, 3> rc_temp(rc_data);
 Matrixf<3, 6> rc = rc_temp.trans();
@@ -179,6 +179,12 @@ void handle_remote()
   arm_j3.cmd_t(arm_j3.feedforward_t_);
   arm_j4.cmd_t(arm_j4.feedforward_t_);
   arm_j5.cmd_t(arm_j5.feedforward_t_);
+  // arm_j0.disable();
+  // arm_j1.disable();
+  // arm_j2.disable();
+  // arm_j3.disable();
+  // arm_j4.disable();
+  // arm_j5.disable();
 }
 
 void handle_keyboard()
