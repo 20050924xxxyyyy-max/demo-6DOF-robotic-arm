@@ -17,6 +17,5 @@ void send_arm_j2();
 void send_arm_j3();
 void send_arm_j4();
 void send_arm_j5();
-void send_gripper();
 
 #endif  // CAN_HPP

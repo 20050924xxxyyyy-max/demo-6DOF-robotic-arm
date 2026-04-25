@@ -15,23 +15,6 @@ extern bool arm_deployed;
 Controller tx_data;
 sp::LowPassFilter j5_vel_filter(0.5f);
 
-// 校准零点偏移
-void Controller::offset_init()
-{
-  if (this->has_initiated) return;
-  this->j0_offset = motor_j0.angle;
-  this->j1_offset = motor_j1.angle;
-  this->j2_offset = motor_j2.angle;
-  this->j3_offset = motor_j3.angle;
-  this->j4_offset = motor_j4.angle;
-  this->j5_offset = motor_j5.angle;
-  if (
-    this->j0_offset && this->j1_offset && this->j2_offset && this->j3_offset && this->j4_offset &&
-    this->j5_offset)
-    has_initiated = true;  // 确定已经校准
-}
-
-float j4_limited = 0;
 // 从电机读取当前姿态位置
 void Controller::update()
 {
@@ -86,7 +69,6 @@ void Controller::send_data()
 extern "C" void send_task()
 {
   while (true) {
-    tx_data.offset_init();
     tx_data.update();
     tx_data.head_set();
     tx_data.pack_data();
