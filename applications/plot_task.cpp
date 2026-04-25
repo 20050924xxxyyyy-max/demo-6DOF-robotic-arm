@@ -30,20 +30,20 @@ extern "C" void plotter_task()
     // plotter.plot(
     //   arm_j2.set_, arm_j2.pos, sp::limit_angle(arm_j2.set_ - arm_j2.pos), arm_j2.pid_.out,
     //   arm_j2.vel, arm_j2.motor_speed_pid_.out);
-    //plotter.plot(arm_j0.pos, arm_j1.pos, arm_j2.pos, arm_j3.pos, arm_j4.pos, arm_j5.pos);
+    plotter.plot(arm_j0.pos, arm_j1.pos, arm_j2.pos, arm_j3.pos, arm_j4.pos, arm_j5.pos);
 
 
     // plotter.plot(
     //   arm_j2.set_, arm_j2.pos, sp::limit_angle(arm_j2.set_ - arm_j2.pos)
     // );
 
-    plotter.plot(
-      plot_vel_cmd,
-      arm_j3.vel,
-      //arm_j0.motor_speed_pid_.data.pout,
-      //arm_j0.motor_speed_pid_.data.dout,
-      arm_j0.motor_speed_pid_.out
-    );
+    // plotter.plot(
+    //   plot_vel_cmd,
+    //   arm_j3.vel,
+    //   //arm_j0.motor_speed_pid_.data.pout,
+    //   //arm_j0.motor_speed_pid_.data.dout,
+    //   arm_j0.motor_speed_pid_.out
+    // );
 
     osDelay(10);  // 100Hz
   }

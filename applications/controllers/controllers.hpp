@@ -34,7 +34,7 @@ constexpr float MIN_J3 = -3;  //rad
 constexpr float MIN_J4 = -3;  //rad
 constexpr float MIN_J5 = -10000;  //rad
 
-constexpr float MID_J0 =  3.16;    //rad 调试3.16 操作手6.3
+constexpr float MID_J0 =  0;    //rad 调试3.16 操作手6.3
 constexpr float MID_J1 =  -1.69;  //rad
 constexpr float MID_J2 =  3;  //rad
 constexpr float MID_J3 =  2.36;  //rad
