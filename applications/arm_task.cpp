@@ -169,6 +169,39 @@ void handle_disable()
 
 void handle_position()
 {
+  if (vt03.robot.mode) {
+    if(fabs(vt03.robot.j0_pos-arm_j0.pos)>0.1 && fabs(vt03.robot.j0_vel) < 0.15 ){
+      arm_j0.cmd(vt03.robot.j0_pos);
+    }
+    else {
+      arm_j0.cmd_t(arm_j0.feedforward_t_);
+    }
+    if(fabs(vt03.robot.j1_pos-arm_j1.pos)>0.1 && fabs(vt03.robot.j1_vel) < 0.15 ){
+      arm_j1.cmd(vt03.robot.j1_pos);
+    }
+    else {
+      arm_j1.cmd_t(arm_j1.feedforward_t_);
+    }
+    if(fabs(vt03.robot.j2_pos-arm_j2.pos)>0.1 && fabs(vt03.robot.j2_vel) < 0.15 ){
+      arm_j2.cmd(vt03.robot.j2_pos);
+    }
+    else {
+      arm_j2.cmd_t(arm_j2.feedforward_t_);
+    }
+    arm_j3.cmd_t(arm_j3.feedforward_t_);
+    arm_j4.cmd_t(arm_j4.feedforward_t_);
+    arm_j5.disable();
+    // arm_j3.cmd(vt03.robot.j3);
+    // arm_j4.cmd(vt03.robot.j4);
+  }
+  else {
+    arm_j0.cmd_t(arm_j0.feedforward_t_);
+    arm_j1.cmd_t(arm_j1.feedforward_t_);
+    arm_j2.cmd_t(arm_j2.feedforward_t_);
+    arm_j3.cmd_t(arm_j3.feedforward_t_);
+    arm_j4.cmd_t(arm_j4.feedforward_t_);
+    arm_j5.cmd_t(arm_j5.feedforward_t_);
+  }
   // if (!automation.idle()) return;
 
   // arm_j0.add(0.0f);
@@ -184,39 +217,39 @@ void handle_position()
   // arm_j4.cmd_t(arm_j4.feedforward_t_);
   // arm_j5.cmd_t(arm_j5.feedforward_t_);
 
-  //速度环
-  float raw = float(remote.ch_lh);
-  const float scale = 10.0f;  // 调整此值以改变最大速度（示例：660 * 0.005 ≈ 3.3 rad/s）
-  const float max_vel = 3.0f;  // 安全上限（rad/s），根据电机/机械限位调整
+  // //速度环
+  // float raw = float(remote.ch_lh);
+  // const float scale = 10.0f;  // 调整此值以改变最大速度（示例：660 * 0.005 ≈ 3.3 rad/s）
+  // const float max_vel = 3.0f;  // 安全上限（rad/s），根据电机/机械限位调整
 
-  float vel_cmd = raw * scale;
-  plot_vel_cmd = vel_cmd;
-  vel_cmd = sp::limit_min_max(vel_cmd, -max_vel, max_vel);
+  // float vel_cmd = raw * scale;
+  // plot_vel_cmd = vel_cmd;
+  // vel_cmd = sp::limit_min_max(vel_cmd, -max_vel, max_vel);
 
-  arm_j3.cmd_v(vel_cmd);
+  // arm_j3.cmd_v(vel_cmd);
 
-  //位置环
-  //将遥控通道映射为每个周期的位置增量（rad/tick）
-  float raw_0 = float(remote.ch_rh);  // 例如范围 -660..660
-  const float scale_0 = 0.01f;        // 每个 control loop tick 的增量，按需调小/调大
-  float delta_0 = raw_0 * scale_0;
-  arm_j0.add(delta_0);
+  // //位置环
+  // //将遥控通道映射为每个周期的位置增量（rad/tick）
+  // float raw_0 = float(remote.ch_rh);  // 例如范围 -660..660
+  // const float scale_0 = 0.01f;        // 每个 control loop tick 的增量，按需调小/调大
+  // float delta_0 = raw_0 * scale_0;
+  // arm_j0.add(delta_0);
 
-  float raw_1 = float(remote.ch_rv);
-  const float scale_1 = 0.01f;
-  float delta_1 = raw_1 * scale_1;
-  arm_j1.add(delta_1);
+  // float raw_1 = float(remote.ch_rv);
+  // const float scale_1 = 0.01f;
+  // float delta_1 = raw_1 * scale_1;
+  // arm_j1.add(delta_1);
 
-  float raw_2 = float(remote.ch_lv);
-  const float scale_2 = 0.01f;
-  float delta_2 = raw_2 * scale_2;
-  arm_j2.add(delta_2);
+  // float raw_2 = float(remote.ch_lv);
+  // const float scale_2 = 0.01f;
+  // float delta_2 = raw_2 * scale_2;
+  // arm_j2.add(delta_2);
 
-  //arm_j1.cmd_t(arm_j1.feedforward_t_);
-  //arm_j2.cmd_t(arm_j2.feedforward_t_);
-  //arm_j3.cmd_t(arm_j3.feedforward_t_);
-  arm_j4.cmd_t(arm_j4.feedforward_t_);
-  arm_j5.cmd_t(arm_j5.feedforward_t_);
+  // //arm_j1.cmd_t(arm_j1.feedforward_t_);
+  // //arm_j2.cmd_t(arm_j2.feedforward_t_);
+  // //arm_j3.cmd_t(arm_j3.feedforward_t_);
+  // arm_j4.cmd_t(arm_j4.feedforward_t_);
+  // arm_j5.cmd_t(arm_j5.feedforward_t_);
 
   // arm_j0.disable();
   // arm_j1.disable();

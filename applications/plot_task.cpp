@@ -30,16 +30,24 @@ extern "C" void plotter_task()
     // plotter.plot(
     //   arm_j2.set_, arm_j2.pos, sp::limit_angle(arm_j2.set_ - arm_j2.pos), arm_j2.pid_.out,
     //   arm_j2.vel, arm_j2.motor_speed_pid_.out);
-    plotter.plot(arm_j0.pos, arm_j1.pos, arm_j2.pos, arm_j3.pos, arm_j4.pos, arm_j5.pos);
-
-
     // plotter.plot(
-    //   arm_j2.set_, arm_j2.pos, sp::limit_angle(arm_j2.set_ - arm_j2.pos)
+    // arm_j0.pos, vt03.robot.j0_pos, arm_j1.pos, vt03.robot.j1_pos, arm_j2.pos, vt03.robot.j2_pos,
+    //   vt03.robot.j0_vel, vt03.robot.j1_vel,
+    //   vt03.robot.j2_vel
+    plotter.plot(
+      // (fabs(vt03.robot.j0_pos - arm_j0.pos) > 0.1 && fabs(vt03.robot.j0_vel) < 0.15),
+      // (fabs(vt03.robot.j1_pos - arm_j1.pos) > 0.1 && fabs(vt03.robot.j1_vel) < 0.15),
+      // (fabs(vt03.robot.j2_pos - arm_j2.pos) > 0.1 && fabs(vt03.robot.j2_vel) < 0.15)
+
+      arm_j0.pos,arm_j1.pos, arm_j2.pos, arm_j3.pos, arm_j4.pos, arm_j5.pos
+      );
+    // plotter.plot(
+    //   arm_j2.set_, arm_j2.pos, sp::limit_angle(arm_j2.set_ - arm_j2.pos)vt03.robot.j0
     // );
 
     // plotter.plot(
     //   plot_vel_cmd,
-    //   arm_j3.vel,
+    //   arm_j3.vel, 
     //   //arm_j0.motor_speed_pid_.data.pout,
     //   //arm_j0.motor_speed_pid_.data.dout,
     //   arm_j0.motor_speed_pid_.out
