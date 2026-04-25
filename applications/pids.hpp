@@ -13,7 +13,7 @@ constexpr float MAX_J5_V = 1;    // rad/s
 constexpr float MAX_J0_T = 5;     // N·m
 constexpr float MAX_J1_T = 5;     // N·m
 constexpr float MAX_J2_T = 5;     // N·m
-constexpr float MAX_J3_T = 0.3;   // N·m
+constexpr float MAX_J3_T = 0;   // N·m
 constexpr float MAX_J4_T = 0.0f;  // N·m
 constexpr float MAX_J5_T = 0.0f;  // N·m
 

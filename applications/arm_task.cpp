@@ -167,7 +167,7 @@ void handle_disable()
   arm_j5.disable();
 }
 
-void handle_torque()
+void handle_position()
 {
   // if (!automation.idle()) return;
 
@@ -234,7 +234,7 @@ void handle_torque()
 
 // // 增量应用到关节位置设定（会在 JointMotorController 内累加到 set_）
 //arm_j0.add(delta);
-void handle_gravity()
+void handle_torque()
 {
   // if (!automation.idle()) return;
 
@@ -258,19 +258,19 @@ void handle_gravity()
   // arm_j5.disable();
 }
 
-void handle_position()
-{
-  // arm_j0.disable();
-  // arm_j1.disable();
-  // arm_j2.disable();
-  // arm_j3.disable();
-  // arm_j4.disable();
-  // arm_j5.disable();
-  if (!automation.idle()) return;
-  arm_j0.add(0.0f);
-  arm_j1.add(0.0f);
-  arm_j2.add(0.0f);
-  arm_j3.add(0.0f);
-  arm_j4.add(0.0f);
-  arm_j5.add(0.0f);
-}
+// void handle_position()
+// {
+//   // arm_j0.disable();
+//   // arm_j1.disable();
+//   // arm_j2.disable();
+//   // arm_j3.disable();
+//   // arm_j4.disable();
+//   // arm_j5.disable();
+//   if (!automation.idle()) return;
+//   arm_j0.add(0.0f);
+//   arm_j1.add(0.0f);
+//   arm_j2.add(0.0f);
+//   arm_j3.add(0.0f);
+//   arm_j4.add(0.0f);
+//   arm_j5.add(0.0f);
+// }
