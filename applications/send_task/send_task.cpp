@@ -15,27 +15,9 @@ extern bool arm_deployed;
 Controller tx_data;
 sp::LowPassFilter j5_vel_filter(0.5f);
 
-// 校准零点偏移
-void Controller::offset_init()
-{
-  if (this->has_initiated) return;
-  this->j0_offset = motor_j0.angle;
-  this->j1_offset = motor_j1.angle;
-  this->j2_offset = motor_j2.angle;
-  this->j3_offset = motor_j3.angle;
-  this->j4_offset = motor_j4.angle;
-  this->j5_offset = motor_j5.angle;
-  if (
-    this->j0_offset && this->j1_offset && this->j2_offset && this->j3_offset && this->j4_offset &&
-    this->j5_offset)
-    has_initiated = true;  // 确定已经校准
-}
-
-float j4_limited = 0;
 // 从电机读取当前姿态位置
 void Controller::update()
 {
-  this->control = true;
   this->j0 = arm_j0.pos;
   this->j1 = arm_j1.pos;
   this->j2 = arm_j2.pos;
@@ -43,7 +25,6 @@ void Controller::update()
   this->j4 = arm_j4.pos;
   j5_vel_filter.update(arm_j5.vel);
   this->j5 = j5_vel_filter.out;
-  this->gripper = 0;  // TODO gripper
 }
 
 // 设置裁判系统协议帧头
@@ -60,11 +41,8 @@ void Controller::head_set()
 // 将数据打包到协议帧中
 void Controller::pack_data()
 {
-  float buff_[8] = {this->control, this->j0, this->j1, this->j2,
-                    this->j3,      this->j4, this->j5, this->gripper};
-  // float buff_[7] = {0, 1, 2, 0, 0, 0, 0};
-  memcpy(this->frame_.data.data, buff_, 8 * sizeof(float));
-  // memcpy(this->frame_.data.data + 8 * sizeof(float), &this->pump, sizeof(bool));
+  float buff_[6] = {this->j0, this->j1, this->j2, this->j3, this->j4, this->j5};
+  memcpy(this->frame_.data.data, buff_, 6 * sizeof(float));
 }
 
 // 计算并设置协议帧的CRC校验码
@@ -91,7 +69,6 @@ void Controller::send_data()
 extern "C" void send_task()
 {
   while (true) {
-    tx_data.offset_init();
     tx_data.update();
     tx_data.head_set();
     tx_data.pack_data();

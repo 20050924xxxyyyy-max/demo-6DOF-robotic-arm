@@ -11,6 +11,6 @@ enum class FeedbackMode
 extern FeedbackMode mode;
 extern FeedbackMode last_mode;
 void handle_disable();
-void handle_remote();
-void handle_keyboard();
+void handle_torque();
+void handle_position();
 #endif  // ARM_TASK_HPP

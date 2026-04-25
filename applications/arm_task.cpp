@@ -1,14 +1,17 @@
+#include "arm_task.hpp"
+
 #include "automations/automation_manager/automation_manager.hpp"
 #include "automations/automations.hpp"
 #include "automations/helpers/helpers.hpp"
 #include "automations/joint_move/joint_move.hpp"
 #include "can.hpp"
 #include "cmsis_os.h"
-#include "control_task.hpp"
 #include "controllers/controllers.hpp"
 #include "src/matrix.h"
 #include "src/robotics.h"
 #include "uart_task.hpp"
+
+float plot_vel_cmd = 0.0f;
 
 FeedbackMode mode = FeedbackMode::DISABLE;
 FeedbackMode last_mode = FeedbackMode::DISABLE;
@@ -16,14 +19,14 @@ auto last_remote_sw_l = sp::DBusSwitchMode::DOWN;
 extern bool arm_deployed;
 AutomationManager automation;
 void switch_mode();
-float m[6] = {0.42072, 0.41367, 0.233403, 0.161971, 0.078939, 0.0001};  // 质量
+float m[6] = {0.16258, 1.0636, 0.06744, 0.14668, 0.22763, 0.0001};  // 质量
 // clang-format off
 static float rc_data[18] = {
-  0 * 1e-3, -9.281 * 1e-3,  107.324 * 1e-3,  
-  -19.53 * 1e-3, -0.15 * 1e-3,  107.18 * 1e-3,
-  0 * 1e-3, -42.780 * 1e-3, 72.806 * 1e-3, 
-  -1.313 * 1e-3, -8.30 * 1e-3,  -4.23 * 1e-3,
-  0.281 * 1e-3,  -3.864 * 1e-3, 51.008 * 1e-3,
+  0 * 1e-3, -28.8 * 1e-3,  23.85 * 1e-3,  
+  -59.03 * 1e-3, 0 * 1e-3,  90.03 * 1e-3,
+  0.16 * 1e-3, -63.02 * 1e-3, 56.08 * 1e-3, 
+  -10.85 * 1e-3, -49.21 * 1e-3,  -1.03 * 1e-3,
+  9.49 * 1e-3,  -0.35 * 1e-3, 41.63 * 1e-3,
   -0.00001 * 1e-3,   -0.00001 * 1e-3, -0.00001 * 1e-3};
 Matrixf<6, 3> rc_temp(rc_data);
 Matrixf<3, 6> rc = rc_temp.trans();
@@ -67,12 +70,12 @@ robotics::Serial_Link<6> sp_arm(links);
 void mode_control()
 {
   last_mode = mode;
-  // if (remote.sw_r == sp::DBusSwitchMode::DOWN)
-  //   mode = FeedbackMode::DISABLE;
-  // else if (remote.sw_r == sp::DBusSwitchMode::MID)
-  //   mode = FeedbackMode::DISABLE;
-  // else if (remote.sw_r == sp::DBusSwitchMode::UP)
-  mode = FeedbackMode::TORQUE;
+  if (remote.sw_r == sp::DBusSwitchMode::DOWN)
+    mode = FeedbackMode::DISABLE;
+  else if (remote.sw_r == sp::DBusSwitchMode::MID)
+    mode = FeedbackMode::TORQUE;
+  else if (remote.sw_r == sp::DBusSwitchMode::UP)
+    mode = FeedbackMode::POSITION;
 }
 
 void switch_mode()
@@ -130,6 +133,7 @@ void calc_grav_t()
 extern "C" void arm_task()
 {
   osDelay(3000);  // 等待全部使能
+                  // automation.load(&deploy_arm);（初始化）
   while (true) {
     mode_control();
     if (mode != last_mode) {
@@ -140,11 +144,11 @@ extern "C" void arm_task()
       handle_disable();
     }
     if (mode == FeedbackMode::TORQUE) {
-      handle_remote();
+      handle_torque();
     }
     // handle_disable();
     if (mode == FeedbackMode::POSITION) {
-      handle_keyboard();
+      handle_position();
     }
     automation.run();
     osDelay(1);
@@ -163,7 +167,107 @@ void handle_disable()
   arm_j5.disable();
 }
 
-void handle_remote()
+void handle_position()
+{
+  if (vt03.robot.mode) {
+    if(fabs(vt03.robot.j0_pos-arm_j0.pos)>0.1 && fabs(vt03.robot.j0_vel) < 0.15 ){
+      arm_j0.cmd(vt03.robot.j0_pos);
+    }
+    else {
+      arm_j0.cmd_t(arm_j0.feedforward_t_);
+    }
+    if(fabs(vt03.robot.j1_pos-arm_j1.pos)>0.1 && fabs(vt03.robot.j1_vel) < 0.15 ){
+      arm_j1.cmd(vt03.robot.j1_pos);
+    }
+    else {
+      arm_j1.cmd_t(arm_j1.feedforward_t_);
+    }
+    if(fabs(vt03.robot.j2_pos-arm_j2.pos)>0.1 && fabs(vt03.robot.j2_vel) < 0.15 ){
+      arm_j2.cmd(vt03.robot.j2_pos);
+    }
+    else {
+      arm_j2.cmd_t(arm_j2.feedforward_t_);
+    }
+    arm_j3.cmd_t(arm_j3.feedforward_t_);
+    arm_j4.cmd_t(arm_j4.feedforward_t_);
+    arm_j5.disable();
+    // arm_j3.cmd(vt03.robot.j3);
+    // arm_j4.cmd(vt03.robot.j4);
+  }
+  else {
+    arm_j0.cmd_t(arm_j0.feedforward_t_);
+    arm_j1.cmd_t(arm_j1.feedforward_t_);
+    arm_j2.cmd_t(arm_j2.feedforward_t_);
+    arm_j3.cmd_t(arm_j3.feedforward_t_);
+    arm_j4.cmd_t(arm_j4.feedforward_t_);
+    arm_j5.cmd_t(arm_j5.feedforward_t_);
+  }
+  // if (!automation.idle()) return;
+
+  // arm_j0.add(0.0f);
+  // arm_j1.add(0.0f);
+  // arm_j2.add(0.0f);
+  // arm_j3.add(0.0f);
+  // arm_j4.add(0.0f);
+  // arm_j5.add(0.0f);
+  // arm_j0.cmd_t(arm_j0.feedforward_t_);
+  // arm_j1.cmd_t(arm_j1.feedforward_t_);
+  // arm_j2.cmd_t(arm_j2.feedforward_t_);
+  // arm_j3.cmd_t(arm_j3.feedforward_t_);
+  // arm_j4.cmd_t(arm_j4.feedforward_t_);
+  // arm_j5.cmd_t(arm_j5.feedforward_t_);
+
+  // //速度环
+  // float raw = float(remote.ch_lh);
+  // const float scale = 10.0f;  // 调整此值以改变最大速度（示例：660 * 0.005 ≈ 3.3 rad/s）
+  // const float max_vel = 3.0f;  // 安全上限（rad/s），根据电机/机械限位调整
+
+  // float vel_cmd = raw * scale;
+  // plot_vel_cmd = vel_cmd;
+  // vel_cmd = sp::limit_min_max(vel_cmd, -max_vel, max_vel);
+
+  // arm_j3.cmd_v(vel_cmd);
+
+  // //位置环
+  // //将遥控通道映射为每个周期的位置增量（rad/tick）
+  // float raw_0 = float(remote.ch_rh);  // 例如范围 -660..660
+  // const float scale_0 = 0.01f;        // 每个 control loop tick 的增量，按需调小/调大
+  // float delta_0 = raw_0 * scale_0;
+  // arm_j0.add(delta_0);
+
+  // float raw_1 = float(remote.ch_rv);
+  // const float scale_1 = 0.01f;
+  // float delta_1 = raw_1 * scale_1;
+  // arm_j1.add(delta_1);
+
+  // float raw_2 = float(remote.ch_lv);
+  // const float scale_2 = 0.01f;
+  // float delta_2 = raw_2 * scale_2;
+  // arm_j2.add(delta_2);
+
+  // //arm_j1.cmd_t(arm_j1.feedforward_t_);
+  // //arm_j2.cmd_t(arm_j2.feedforward_t_);
+  // //arm_j3.cmd_t(arm_j3.feedforward_t_);
+  // arm_j4.cmd_t(arm_j4.feedforward_t_);
+  // arm_j5.cmd_t(arm_j5.feedforward_t_);
+
+  // arm_j0.disable();
+  // arm_j1.disable();
+  // arm_j2.disable();
+  // arm_j3.disable();
+  // arm_j4.disable();
+  // arm_j5.disable();
+}
+//if (!automation.idle()) return; // 若在自动化中则不干扰
+//位置环
+// 将遥控通道映射为每个周期的位置增量（rad/tick）
+// float raw = float(remote.ch_rh);  // 例如范围 -660..660
+// const float scale = 0.0005f;      // 每个 control loop tick 的增量，按需调小/调大
+// float delta = raw * scale;
+
+// // 增量应用到关节位置设定（会在 JointMotorController 内累加到 set_）
+//arm_j0.add(delta);
+void handle_torque()
 {
   // if (!automation.idle()) return;
 
@@ -179,21 +283,27 @@ void handle_remote()
   arm_j3.cmd_t(arm_j3.feedforward_t_);
   arm_j4.cmd_t(arm_j4.feedforward_t_);
   arm_j5.cmd_t(arm_j5.feedforward_t_);
-}
-
-void handle_keyboard()
-{
   // arm_j0.disable();
   // arm_j1.disable();
   // arm_j2.disable();
   // arm_j3.disable();
   // arm_j4.disable();
   // arm_j5.disable();
-  if (!automation.idle()) return;
-  arm_j0.add(0.0f);
-  arm_j1.add(0.0f);
-  arm_j2.add(0.0f);
-  arm_j3.add(0.0f);
-  arm_j4.add(0.0f);
-  arm_j5.add(0.0f);
 }
+
+// void handle_position()
+// {
+//   // arm_j0.disable();
+//   // arm_j1.disable();
+//   // arm_j2.disable();
+//   // arm_j3.disable();
+//   // arm_j4.disable();
+//   // arm_j5.disable();
+//   if (!automation.idle()) return;
+//   arm_j0.add(0.0f);
+//   arm_j1.add(0.0f);
+//   arm_j2.add(0.0f);
+//   arm_j3.add(0.0f);
+//   arm_j4.add(0.0f);
+//   arm_j5.add(0.0f);
+// }

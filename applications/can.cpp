@@ -41,9 +41,6 @@ void arm_init_enable()
   motor_init_enable(motor_j2, fdcan1);
   motor_init_enable(motor_j3, fdcan2);
   motor_init_enable(motor_j4, fdcan2);
-  // motor_init_enable(motor_j5, fdcan2);
-  //   motor_init_enable(motor_j5, fdcan1);
-  // motor_init_enable(gripper::motor_gripper, fdcan3);
 }
 
 void arm_init_error_clear()
@@ -52,20 +49,14 @@ void arm_init_error_clear()
   motor_init_clear_error(motor_j2, fdcan1);
   motor_init_clear_error(motor_j3, fdcan2);
   motor_init_clear_error(motor_j4, fdcan2);
-  // motor_init_clear_error(motor_j5, fdcan2);
-  //   motor_init_clear_error(motor_j5, fdcan1);
-  // motor_init_clear_error(gripper::motor_gripper, fdcan3);
 }
 
 void arm_error_detect()
 {
-  //   motor_error_detect(motor_j0, fdcan1);
   motor_error_detect(motor_j1, fdcan1);
   motor_error_detect(motor_j2, fdcan1);
   motor_error_detect(motor_j3, fdcan2);
   motor_error_detect(motor_j4, fdcan2);
-  // motor_error_detect(motor_j5, fdcan2);
-  // motor_error_detect(gripper::motor_gripper, fdcan3);
 }
 
 //can1
@@ -102,12 +93,6 @@ void send_arm_j4()
 
 void send_arm_j5()
 {
-  motor_j5.write(fdcan1.tx_data);
-  fdcan1.send(motor_j5.tx_id);
+  motor_j5.write(fdcan2.tx_data);
+  fdcan2.send(motor_j5.tx_id);
 }
-
-// void send_gripper()
-// {
-//   gripper::motor_gripper.write(fdcan3.tx_data);
-//   fdcan3.send(gripper::motor_gripper.tx_id);
-// }
