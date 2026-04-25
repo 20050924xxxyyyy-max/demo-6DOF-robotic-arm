@@ -10,6 +10,8 @@
 #include "src/robotics.h"
 #include "uart_task.hpp"
 
+float plot_vel_cmd = 0.0f;
+
 FeedbackMode mode = FeedbackMode::DISABLE;
 FeedbackMode last_mode = FeedbackMode::DISABLE;
 auto last_remote_sw_l = sp::DBusSwitchMode::DOWN;
@@ -67,12 +69,12 @@ robotics::Serial_Link<6> sp_arm(links);
 void mode_control()
 {
   last_mode = mode;
-  // if (remote.sw_r == sp::DBusSwitchMode::DOWN)
-  //   mode = FeedbackMode::DISABLE;
-  // else if (remote.sw_r == sp::DBusSwitchMode::MID)
-  //   mode = FeedbackMode::DISABLE;
-  // else if (remote.sw_r == sp::DBusSwitchMode::UP)
-  mode = FeedbackMode::TORQUE;
+  if (remote.sw_r == sp::DBusSwitchMode::DOWN)
+    mode = FeedbackMode::DISABLE;
+  else if (remote.sw_r == sp::DBusSwitchMode::MID)
+    mode = FeedbackMode::TORQUE;
+  else if (remote.sw_r == sp::DBusSwitchMode::UP)
+    mode = FeedbackMode::POSITION;
 }
 
 void switch_mode()
@@ -130,6 +132,7 @@ void calc_grav_t()
 extern "C" void arm_task()
 {
   osDelay(3000);  // 等待全部使能
+                  // automation.load(&deploy_arm);（初始化）
   while (true) {
     mode_control();
     if (mode != last_mode) {
@@ -140,11 +143,12 @@ extern "C" void arm_task()
       handle_disable();
     }
     if (mode == FeedbackMode::TORQUE) {
-      handle_remote();
+      handle_gravity();
     }
     // handle_disable();
     if (mode == FeedbackMode::POSITION) {
-      handle_keyboard();
+      handle_remote();
+      //handle_keyboard();
     }
     automation.run();
     osDelay(1);
@@ -164,6 +168,73 @@ void handle_disable()
 }
 
 void handle_remote()
+{
+  // if (!automation.idle()) return;
+
+  // arm_j0.add(0.0f);
+  // arm_j1.add(0.0f);
+  // arm_j2.add(0.0f);
+  // arm_j3.add(0.0f);
+  // arm_j4.add(0.0f);
+  // arm_j5.add(0.0f);
+  // arm_j0.cmd_t(arm_j0.feedforward_t_);
+  // arm_j1.cmd_t(arm_j1.feedforward_t_);
+  // arm_j2.cmd_t(arm_j2.feedforward_t_);
+  // arm_j3.cmd_t(arm_j3.feedforward_t_);
+  // arm_j4.cmd_t(arm_j4.feedforward_t_);
+  // arm_j5.cmd_t(arm_j5.feedforward_t_);
+
+  //速度环
+  float raw = float(remote.ch_lh);
+  const float scale = 10.0f;  // 调整此值以改变最大速度（示例：660 * 0.005 ≈ 3.3 rad/s）
+  const float max_vel = 3.0f;  // 安全上限（rad/s），根据电机/机械限位调整
+
+  float vel_cmd = raw * scale;
+  plot_vel_cmd = vel_cmd;
+  vel_cmd = sp::limit_min_max(vel_cmd, -max_vel, max_vel);
+
+  arm_j3.cmd_v(vel_cmd);
+
+  //位置环
+  //将遥控通道映射为每个周期的位置增量（rad/tick）
+  float raw_0 = float(remote.ch_rh);  // 例如范围 -660..660
+  const float scale_0 = 0.01f;        // 每个 control loop tick 的增量，按需调小/调大
+  float delta_0 = raw_0 * scale_0;
+  arm_j0.add(delta_0);
+
+  float raw_1 = float(remote.ch_rv);
+  const float scale_1 = 0.01f;
+  float delta_1 = raw_1 * scale_1;
+  arm_j1.add(delta_1);
+
+  float raw_2 = float(remote.ch_lv);
+  const float scale_2 = 0.01f;
+  float delta_2 = raw_2 * scale_2;
+  arm_j2.add(delta_2);
+
+  //arm_j1.cmd_t(arm_j1.feedforward_t_);
+  //arm_j2.cmd_t(arm_j2.feedforward_t_);
+  //arm_j3.cmd_t(arm_j3.feedforward_t_);
+  arm_j4.cmd_t(arm_j4.feedforward_t_);
+  arm_j5.cmd_t(arm_j5.feedforward_t_);
+
+  // arm_j0.disable();
+  // arm_j1.disable();
+  // arm_j2.disable();
+  // arm_j3.disable();
+  // arm_j4.disable();
+  // arm_j5.disable();
+}
+//if (!automation.idle()) return; // 若在自动化中则不干扰
+//位置环
+// 将遥控通道映射为每个周期的位置增量（rad/tick）
+// float raw = float(remote.ch_rh);  // 例如范围 -660..660
+// const float scale = 0.0005f;      // 每个 control loop tick 的增量，按需调小/调大
+// float delta = raw * scale;
+
+// // 增量应用到关节位置设定（会在 JointMotorController 内累加到 set_）
+//arm_j0.add(delta);
+void handle_gravity()
 {
   // if (!automation.idle()) return;
 

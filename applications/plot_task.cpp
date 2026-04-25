@@ -10,6 +10,7 @@ sp::Plotter plotter(&huart7, false);
 extern float roll2;
 extern Controller tx_data;
 extern float j4_limited;
+extern float plot_vel_cmd;
 extern "C" void plotter_task()
 {
   while (true) {
@@ -30,7 +31,21 @@ extern "C" void plotter_task()
     // plotter.plot(
     //   arm_j2.set_, arm_j2.pos, sp::limit_angle(arm_j2.set_ - arm_j2.pos), arm_j2.pid_.out,
     //   arm_j2.vel, arm_j2.motor_speed_pid_.out);
-    plotter.plot(arm_j0.pos, arm_j1.pos, arm_j2.pos, arm_j3.pos, arm_j4.pos, arm_j5.pos);
+    //plotter.plot(arm_j0.pos, arm_j1.pos, arm_j2.pos, arm_j3.pos, arm_j4.pos, arm_j5.pos);
+
+
+    // plotter.plot(
+    //   arm_j2.set_, arm_j2.pos, sp::limit_angle(arm_j2.set_ - arm_j2.pos)
+    // );
+
+    plotter.plot(
+      plot_vel_cmd,
+      arm_j3.vel,
+      //arm_j0.motor_speed_pid_.data.pout,
+      //arm_j0.motor_speed_pid_.data.dout,
+      arm_j0.motor_speed_pid_.out
+    );
+
     osDelay(10);  // 100Hz
   }
 }

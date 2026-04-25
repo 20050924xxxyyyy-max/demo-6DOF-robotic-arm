@@ -7,7 +7,7 @@
 #include "tools/joint/joint_controller.hpp"
 #include "tools/math_tools/math_tools.hpp"
 
-inline sp::RM_Motor motor_j0(6, sp::RM_Motors::GM6020);
+inline sp::RM_Motor motor_j0(6, sp::RM_Motors::GM6020_V);
 inline sp::DM_Motor motor_j1(0x01, 0x11, 3.141593, 30, 10, true);
 inline sp::DM_Motor motor_j2(0x02, 0x12, 3.141593, 30, 10, true);
 inline sp::DM_Motor motor_j3(0x03, 0x13, 3.141593, 30, 10, true);

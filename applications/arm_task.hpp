@@ -13,4 +13,5 @@ extern FeedbackMode last_mode;
 void handle_disable();
 void handle_remote();
 void handle_keyboard();
+void handle_gravity();
 #endif  // ARM_TASK_HPP
