@@ -1,10 +1,11 @@
+#include "arm_task.hpp"
+
 #include "automations/automation_manager/automation_manager.hpp"
 #include "automations/automations.hpp"
 #include "automations/helpers/helpers.hpp"
 #include "automations/joint_move/joint_move.hpp"
 #include "can.hpp"
 #include "cmsis_os.h"
-#include "control_task.hpp"
 #include "controllers/controllers.hpp"
 #include "src/matrix.h"
 #include "src/robotics.h"
@@ -143,12 +144,11 @@ extern "C" void arm_task()
       handle_disable();
     }
     if (mode == FeedbackMode::TORQUE) {
-      handle_gravity();
+      handle_torque();
     }
     // handle_disable();
     if (mode == FeedbackMode::POSITION) {
-      handle_remote();
-      //handle_keyboard();
+      handle_position();
     }
     automation.run();
     osDelay(1);
@@ -167,7 +167,7 @@ void handle_disable()
   arm_j5.disable();
 }
 
-void handle_remote()
+void handle_torque()
 {
   // if (!automation.idle()) return;
 
@@ -258,7 +258,7 @@ void handle_gravity()
   // arm_j5.disable();
 }
 
-void handle_keyboard()
+void handle_position()
 {
   // arm_j0.disable();
   // arm_j1.disable();
