@@ -37,18 +37,22 @@ void motor_init_enable(sp::DM_Motor & motor, sp::FDCAN & fdcan)
 
 void arm_init_enable()
 {
+  motor_init_enable(motor_j0, fdcan1);
   motor_init_enable(motor_j1, fdcan1);
   motor_init_enable(motor_j2, fdcan1);
   motor_init_enable(motor_j3, fdcan2);
   motor_init_enable(motor_j4, fdcan2);
+  motor_init_enable(motor_j5, fdcan2);
 }
 
 void arm_init_error_clear()
 {
+  motor_init_clear_error(motor_j0, fdcan1);
   motor_init_clear_error(motor_j1, fdcan1);
   motor_init_clear_error(motor_j2, fdcan1);
   motor_init_clear_error(motor_j3, fdcan2);
   motor_init_clear_error(motor_j4, fdcan2);
+  motor_init_clear_error(motor_j5, fdcan2);
 }
 
 void arm_error_detect()
