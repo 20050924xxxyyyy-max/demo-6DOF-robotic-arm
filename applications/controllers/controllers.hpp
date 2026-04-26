@@ -7,7 +7,7 @@
 #include "tools/joint/joint_controller.hpp"
 #include "tools/math_tools/math_tools.hpp"
 
-inline sp::DM_Motor motor_j0(0x00, 0x10, 3.141593, 30, 10, true);
+inline sp::DM_Motor motor_j0(0x06, 0x16, 3.141593, 30, 10, true);
 inline sp::DM_Motor motor_j1(0x01, 0x11, 3.141593, 30, 10, true);
 inline sp::DM_Motor motor_j2(0x02, 0x12, 3.141593, 30, 10, true);
 inline sp::DM_Motor motor_j3(0x03, 0x13, 3.141593, 30, 10, true);
@@ -36,7 +36,7 @@ constexpr float MIN_J5 = -10000;  //rad
 
 constexpr float MID_J0 = 0;      //rad 调试3.16 操作手6.3
 constexpr float MID_J1 = -1.69;  //rad
-constexpr float MID_J2 = 3;      //rad
+constexpr float MID_J2 = 3;      //ra
 constexpr float MID_J3 = 2.36;   //rad
 constexpr float MID_J4 = -1.8;   //rad
 constexpr float MID_J5 = 0;      //rad

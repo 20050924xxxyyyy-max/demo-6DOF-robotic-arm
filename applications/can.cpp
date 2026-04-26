@@ -57,10 +57,12 @@ void arm_init_error_clear()
 
 void arm_error_detect()
 {
+  motor_error_detect(motor_j0, fdcan1);
   motor_error_detect(motor_j1, fdcan1);
   motor_error_detect(motor_j2, fdcan1);
   motor_error_detect(motor_j3, fdcan2);
   motor_error_detect(motor_j4, fdcan2);
+  motor_error_detect(motor_j5, fdcan2);
 }
 
 //can1

@@ -19,29 +19,29 @@ auto last_remote_sw_l = sp::DBusSwitchMode::DOWN;
 extern bool arm_deployed;
 AutomationManager automation;
 void switch_mode();
-float m[6] = {0.16258, 1.0636, 0.06744, 0.14668, 0.22763, 0.0001};  // 质量
+float m[6] = {0.40687, 0.4725, 0.43641, 0.42052, 0.37429, 0.0001};  // 质量
 // clang-format off
 static float rc_data[18] = {
-  0 * 1e-3, -28.8 * 1e-3,  23.85 * 1e-3,  
-  -59.03 * 1e-3, 0 * 1e-3,  90.03 * 1e-3,
-  0.16 * 1e-3, -63.02 * 1e-3, 56.08 * 1e-3, 
-  -10.85 * 1e-3, -49.21 * 1e-3,  -1.03 * 1e-3,
-  9.49 * 1e-3,  -0.35 * 1e-3, 41.63 * 1e-3,
+  0.09 * 1e-3, 14.66 * 1e-3,  0.65 * 1e-3,  
+  -186.64 * 1e-3, -7.92 * 1e-3,  -0.93 * 1e-3,
+  37.35 * 1e-3, 67.25 * 1e-3, -6.61 * 1e-3, 
+  0.09 * 1e-3, -5.58 * 1e-3,  215.10 * 1e-3,
+  -57.22 * 1e-3, 28.59 * 1e-3, -4.02 * 1e-3,
   -0.00001 * 1e-3,   -0.00001 * 1e-3, -0.00001 * 1e-3};
 Matrixf<6, 3> rc_temp(rc_data);
 Matrixf<3, 6> rc = rc_temp.trans();
 
 Matrixf<3, 3> I[6]{
   matrixf::diag<3, 3>(
-    std::array<float, 3>{853161.97f * 1e-9f, 767319.00f * 1e-9f, 283012.83 * 1e-9f}.data()),
+    std::array<float, 3>{353230.51f * 1e-9f, 301232.84f * 1e-9f, 238072.37 * 1e-9f}.data()),
   matrixf::diag<3, 3>(
-    std::array<float, 3>{200577.99f * 1e-9f, 813684.68f * 1e-9f, 793261.99 * 1e-9f}.data()),
+    std::array<float, 3>{195374.20f * 1e-9f, 1701144.97f * 1e-9f, 1662713.69 * 1e-9f}.data()),
   matrixf::diag<3, 3>(
-    std::array<float, 3>{895449.75f * 1e-9f, 272040.73f * 1e-9f, 678932.37f * 1e-9f}.data()),
+    std::array<float, 3>{390577.94f * 1e-9f, 275124.53f * 1e-9f, 372245.81f * 1e-9f}.data()),
   matrixf::diag<3, 3>(
-    std::array<float, 3>{83776.83f * 1e-9f, 82648.23f * 1e-9f, 16432.15f * 1e-9f}.data()),
+    std::array<float, 3>{777989.74f * 1e-9f, 779004.45f * 1e-9f, 150826.81f * 1e-9f}.data()),
   matrixf::diag<3, 3>(
-    std::array<float, 3>{216462.11f * 1e-9f, 128603.9f * 1e-9f, 229525.98f * 1e-9f}.data()),
+    std::array<float, 3>{193744.28f * 1e-9f, 265924.74f * 1e-9f, 242431.65f * 1e-9f}.data()),
   matrixf::eye<3, 3>() * 1e-9f,
 };  // 惯性张量
 
@@ -170,19 +170,19 @@ void handle_disable()
 void handle_position()
 {
   if (vt03.robot.mode) {
-    if(fabs(vt03.robot.j0_pos-arm_j0.pos)>0.1 && fabs(vt03.robot.j0_vel) < 0.15 ){
+    if (fabs(vt03.robot.j0_pos - arm_j0.pos) > 0.1 && fabs(vt03.robot.j0_vel) < 0.15) {
       arm_j0.cmd(vt03.robot.j0_pos);
     }
     else {
       arm_j0.cmd_t(arm_j0.feedforward_t_);
     }
-    if(fabs(vt03.robot.j1_pos-arm_j1.pos)>0.1 && fabs(vt03.robot.j1_vel) < 0.15 ){
+    if (fabs(vt03.robot.j1_pos - arm_j1.pos) > 0.1 && fabs(vt03.robot.j1_vel) < 0.15) {
       arm_j1.cmd(vt03.robot.j1_pos);
     }
     else {
       arm_j1.cmd_t(arm_j1.feedforward_t_);
     }
-    if(fabs(vt03.robot.j2_pos-arm_j2.pos)>0.1 && fabs(vt03.robot.j2_vel) < 0.15 ){
+    if (fabs(vt03.robot.j2_pos - arm_j2.pos) > 0.1 && fabs(vt03.robot.j2_vel) < 0.15) {
       arm_j2.cmd(vt03.robot.j2_pos);
     }
     else {

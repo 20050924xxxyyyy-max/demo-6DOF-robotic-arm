@@ -14,10 +14,14 @@ extern "C" void control_task()
   fdcan1.start();
   fdcan2.start();
   fdcan3.start();
-
+  // osDelay(3000);
   arm_init_enable();
+  // osDelay(3000);
   while (true) {
-    arm_error_detect();
+    // arm_error_detect();
+    if (remote.sw_r == sp::DBusSwitchMode::DOWN) {
+      arm_init_enable();
+    }
     arm_j0.control();
     arm_j1.control();
     arm_j2.control();
