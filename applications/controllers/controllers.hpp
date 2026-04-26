@@ -34,12 +34,12 @@ constexpr float MIN_J3 = -3;      //rad
 constexpr float MIN_J4 = -3;      //rad
 constexpr float MIN_J5 = -10000;  //rad
 
-constexpr float MID_J0 = 0;      //rad 调试3.16 操作手6.3
-constexpr float MID_J1 = -1.69;  //rad
-constexpr float MID_J2 = 3;      //ra
-constexpr float MID_J3 = 2.36;   //rad
-constexpr float MID_J4 = -1.8;   //rad
-constexpr float MID_J5 = 0;      //rad
+constexpr float MID_J0 = 0;       //rad 调试3.16 操作手6.3
+constexpr float MID_J1 = 4.08;    //rad
+constexpr float MID_J2 = 3;       //ra
+constexpr float MID_J3 = 1.723;   //rad
+constexpr float MID_J4 = 1.6421;  //rad
+constexpr float MID_J5 = 0;       //rad
 
 inline JointMotorController<sp::DM_Motor> arm_j0(
   MID_J0, -10000, 10000, MIN_J0, MAX_J0, 100, false, motor_j0, j0_pos_pid, j0_speed_pid, true);
@@ -50,7 +50,7 @@ inline JointMotorController<sp::DM_Motor> arm_j2(
 inline JointMotorController<sp::DM_Motor> arm_j3(
   MID_J3, -10000, 10000, MIN_J3, MAX_J3, 100, false, motor_j3, j3_pos_pid, j3_speed_pid, true);
 inline JointMotorController<sp::DM_Motor> arm_j4(
-  MID_J4, -10000, 10000, MIN_J4, MAX_J4, 100, false, motor_j4, j4_pos_pid, j4_speed_pid, true);
+  MID_J4, -10000, 10000, MIN_J4, MAX_J4, 100, true, motor_j4, j4_pos_pid, j4_speed_pid, true);
 inline JointMotorController<sp::DM_Motor> arm_j5(
   MID_J5, -10000, 10000, MIN_J5, MAX_J5, 100, false, motor_j5, j5_pos_pid, j5_speed_pid, true);
 

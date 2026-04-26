@@ -51,7 +51,7 @@ extern "C" void plotter_task()
     //   //arm_j0.motor_speed_pid_.data.pout,
     //   //arm_j0.motor_speed_pid_.data.dout,
     //   arm_j0.motor_speed_pid_.out
-    // );
+    // );B
 
     osDelay(10);  // 100Hz
   }
